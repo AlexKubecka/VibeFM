@@ -1,4 +1,5 @@
 using FootballManager.Enums;
+using FootballManager.Utilities;
 
 namespace FootballManager.Models
 {
@@ -9,6 +10,7 @@ namespace FootballManager.Models
         public int Age { get; set; }
         public Position Position { get; set; }
         public string Nationality { get; set; }
+        public Team? Team { get; set; } // Reference to the team the player belongs to
 
         // Physical Attributes
         public double Height { get; set; } = 1.8; // Default height in meters
@@ -58,12 +60,19 @@ namespace FootballManager.Models
         public int Loyalty { get; set; } = 50;
 
         // Constructor with only basic attributes required
-        public Player(string name, int age, Position position, string nationality)
+        public Player(string name, int age, Position position, string nationality, Team? team = null)
         {
             Name = name;
             Age = age;
             Position = position;
             Nationality = nationality;
+            Team = team; // Assign the team (optional)
+        }
+
+        // Method to Get Formatted Info
+        public string GetFormattedInfo()
+        {
+            return $"{Name}, Position: {EnumHelper.GetDescription(Position)}, Overall Rating: {CalculateOverallRating()}";
         }
 
         // Method to calculate Overall Rating based on Position
@@ -127,6 +136,7 @@ Name:           {Name}
 Age:            {Age}
 Position:       {Position}
 Nationality:    {Nationality}
+Team:           {(Team != null ? Team.Name : "No Team")}
 Height:         {Height} m
 Weight:         {Weight} kg
 

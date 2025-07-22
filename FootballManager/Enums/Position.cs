@@ -1,22 +1,34 @@
+using System.ComponentModel;
+
 namespace FootballManager.Enums
 {
     public enum Position
     {
-        // Goalkeeper
+        [Description("Goalkeeper")]
         Goalkeeper,
 
-        // Defenders
+        [Description("Right Back")]
         RightBack,
+
+        [Description("Center Back")]
         CenterBack,
+
+        [Description("Left Back")]
         LeftBack,
 
-        // Midfielders
+        [Description("Defensive Midfielder")]
         DefensiveMidfielder,
+
+        [Description("Central Midfielder")]
         CentralMidfielder,
 
-        // Forwards
+        [Description("Right Winger")]
         RightWinger,
+
+        [Description("Left Winger")]
         LeftWinger,
+
+        [Description("Striker")]
         Striker
     }
 }

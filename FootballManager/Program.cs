@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using FootballManager.Enums;
+using FootballManager.Enums; // Add this directive
 using FootballManager.Models;
 
 namespace FootballManager
@@ -9,68 +8,165 @@ namespace FootballManager
     {
         static void Main(string[] args)
         {
-            // Create a team of 11 players with realistic attributes for their positions
-            List<Player> team = new List<Player>
+            // Create a league
+            League league = new League("Premier League");
+
+            // Random generator for player attributes
+            Random random = new Random();
+
+            // Populate the league with 10 teams
+            for (int i = 1; i <= 10; i++)
             {
-                // Goalkeeper
-                new Player("John Doe", 25, Position.Goalkeeper, "English")
-                {
-                    Handling = 85, Reflexes = 90, Communication = 80, AerialAbility = 75, JumpingReach = 78
-                },
+                // Randomize reputation and stadium size for the team
+                double teamReputation = random.Next(50, 100); // Reputation score
+                int stadiumCapacity = random.Next(20000, 80000); // Stadium capacity
 
-                // Defenders
-                new Player("Jane Smith", 28, Position.RightBack, "Spanish")
-                {
-                    Marking = 80, Tackling = 85, Heading = 75, Positioning = 82, Strength = 78, Speed = 80
-                },
-                new Player("Carlos Ruiz", 24, Position.CenterBack, "Mexican")
-                {
-                    Marking = 85, Tackling = 88, Heading = 80, Positioning = 85, Strength = 80
-                },
-                new Player("Lucas Martinez", 21, Position.CenterBack, "Argentinian")
-                {
-                    Marking = 83, Tackling = 86, Heading = 82, Positioning = 84, Strength = 78
-                },
-                new Player("Ella Wilson", 29, Position.LeftBack, "German")
-                {
-                    Marking = 78, Tackling = 80, Heading = 75, Positioning = 80, Strength = 76, Speed = 82
-                },
+                // Calculate team value based on reputation and stadium size
+                double teamValue = CalculateTeamValue(teamReputation, stadiumCapacity);
 
-                // Midfielders
-                new Player("Emily Johnson", 22, Position.DefensiveMidfielder, "American")
+                Team team = new Team($"Team {i}", "International", $"Stadium {i}", stadiumCapacity)
                 {
-                    Passing = 85, Vision = 80, Teamwork = 88, WorkRate = 90, Tackling = 85
-                },
-                new Player("Liam Brown", 26, Position.CentralMidfielder, "Australian")
-                {
-                    Passing = 88, Vision = 85, Teamwork = 90, WorkRate = 85, Stamina = 80
-                },
-                new Player("Sophia Lee", 23, Position.CentralMidfielder, "South Korean")
-                {
-                    Passing = 87, Vision = 84, Teamwork = 85, WorkRate = 83, Stamina = 78
-                },
+                    Value = teamValue,
+                    Reputation = teamReputation
+                };
 
-                // Forwards
-                new Player("Oliver Davis", 27, Position.RightWinger, "Canadian")
+                // Add staff members
+                team.TeamStaff.AddStaffMember(new StaffMember($"Manager {i}", Job.Manager)
                 {
-                    Finishing = 85, Dribbling = 88, Crossing = 80, Speed = 90, Composure = 78
-                },
-                new Player("Mia Taylor", 24, Position.LeftWinger, "French")
+                    TacticalKnowledge = random.Next(70, 100),
+                    Leadership = random.Next(70, 100),
+                    DecisionMaking = random.Next(70, 100)
+                });
+
+                team.TeamStaff.AddStaffMember(new StaffMember($"Assistant Manager {i}", Job.AssistantManager)
                 {
-                    Finishing = 83, Dribbling = 85, Crossing = 82, Speed = 88, Composure = 80
-                },
-                new Player("Noah White", 30, Position.Striker, "Dutch")
+                    Leadership = random.Next(60, 90),
+                    Communication = random.Next(60, 90),
+                    TrainingKnowledge = random.Next(60, 90)
+                });
+
+                // Add 11 players with attributes based on their positions and team quality
+                for (int j = 1; j <= 11; j++)
                 {
-                    Finishing = 90, Dribbling = 85, Shooting = 88, Composure = 85, Heading = 80
+                    Position position = GetRandomPosition(random);
+                    team.AddPlayer(CreatePlayer($"Player {j} (Team {i})", position, random, team.Value, team.Reputation));
                 }
-            };
 
-            // Print the team
-            Console.WriteLine("Team of 11 Players:");
-            Console.WriteLine("--------------------");
-            foreach (var player in team)
+                league.Teams.Add(team);
+            }
+
+            // Rank teams by overall ratings
+            RankTeamsByOverallRatings(league);
+        }
+
+        // Helper method to calculate team value based on reputation and stadium size
+        private static double CalculateTeamValue(double reputation, int stadiumCapacity)
+        {
+            // Formula: Value is influenced by reputation and stadium capacity
+            return Math.Round(Math.Pow((2 * reputation * reputation) + (stadiumCapacity / 100), 2), 2);
+        }
+
+        // Helper method to create a player with attributes based on their position and team quality
+        private static Player CreatePlayer(string name, Position position, Random random, double teamValue, double teamReputation)
+        {
+            // Adjust ranges based on team value and reputation
+            int minAttribute = (int)Math.Max(50, teamReputation); // Minimum attribute value
+            int maxAttribute = (int)Math.Min(100, teamValue / 10 + 50); // Maximum attribute value
+
+            Player player = new Player(name, random.Next(18, 35), position, "International");
+
+            switch (position)
             {
-                Console.WriteLine($"Name: {player.Name}, Nationality: {player.Nationality}, Position: {player.Position}, Overall Rating: {player.CalculateOverallRating()}");
+                case Position.Goalkeeper:
+                    player.Handling = random.Next(minAttribute, maxAttribute);
+                    player.Reflexes = random.Next(minAttribute, maxAttribute);
+                    player.Communication = random.Next(minAttribute, maxAttribute);
+                    player.AerialAbility = random.Next(minAttribute, maxAttribute);
+                    player.JumpingReach = random.Next(minAttribute, maxAttribute);
+                    break;
+
+                case Position.RightBack:
+                case Position.LeftBack:
+                    player.Marking = random.Next(minAttribute, maxAttribute);
+                    player.Tackling = random.Next(minAttribute, maxAttribute);
+                    player.Positioning = random.Next(minAttribute, maxAttribute);
+                    player.Speed = random.Next(minAttribute, maxAttribute);
+                    player.Crossing = random.Next(minAttribute, maxAttribute);
+                    break;
+
+                case Position.CenterBack:
+                    player.Marking = random.Next(minAttribute, maxAttribute);
+                    player.Tackling = random.Next(minAttribute, maxAttribute);
+                    player.Heading = random.Next(minAttribute, maxAttribute);
+                    player.Positioning = random.Next(minAttribute, maxAttribute);
+                    player.Strength = random.Next(minAttribute, maxAttribute);
+                    break;
+
+                case Position.DefensiveMidfielder:
+                    player.Passing = random.Next(minAttribute, maxAttribute);
+                    player.Vision = random.Next(minAttribute, maxAttribute);
+                    player.Teamwork = random.Next(minAttribute, maxAttribute);
+                    player.WorkRate = random.Next(minAttribute, maxAttribute);
+                    player.Tackling = random.Next(minAttribute, maxAttribute);
+                    break;
+
+                case Position.CentralMidfielder:
+                    player.Passing = random.Next(minAttribute, maxAttribute);
+                    player.Vision = random.Next(minAttribute, maxAttribute);
+                    player.Teamwork = random.Next(minAttribute, maxAttribute);
+                    player.WorkRate = random.Next(minAttribute, maxAttribute);
+                    player.Dribbling = random.Next(minAttribute, maxAttribute);
+                    break;
+
+                case Position.RightWinger:
+                case Position.LeftWinger:
+                    player.Dribbling = random.Next(minAttribute, maxAttribute);
+                    player.Crossing = random.Next(minAttribute, maxAttribute);
+                    player.Speed = random.Next(minAttribute, maxAttribute);
+                    player.Finishing = random.Next(minAttribute, maxAttribute);
+                    player.Composure = random.Next(minAttribute, maxAttribute);
+                    break;
+
+                case Position.Striker:
+                    player.Finishing = random.Next(minAttribute, maxAttribute);
+                    player.Dribbling = random.Next(minAttribute, maxAttribute);
+                    player.Shooting = random.Next(minAttribute, maxAttribute);
+                    player.Heading = random.Next(minAttribute, maxAttribute);
+                    player.Composure = random.Next(minAttribute, maxAttribute);
+                    break;
+            }
+
+            return player;
+        }
+
+        // Helper method to get a random position
+        private static Position GetRandomPosition(Random random)
+        {
+            Array positions = Enum.GetValues(typeof(Position));
+            return (Position)positions.GetValue(random.Next(positions.Length));
+        }
+
+        // Helper method to rank teams by overall ratings
+        private static void RankTeamsByOverallRatings(League league)
+        {
+            Console.WriteLine($"League Rankings: {league.Name}");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("Team\t\tOverall Rating\tValue\tReputation");
+            Console.WriteLine("-----------------------------------");
+
+            foreach (var team in league.Teams.OrderByDescending(t => t.CalculateTeamOverallRating()))
+            {
+                Console.WriteLine($"{team.Name}\t\t{team.CalculateTeamOverallRating()}\t${team.Value:N2}M\t{team.Reputation:N2}");
+                Console.WriteLine("Manager Rating: " + team.TeamStaff.Members
+                    .Where(m => m.Job == Job.Manager)
+                    .Select(m => m.CalculateOverallRating())
+                    .FirstOrDefault());
+                Console.WriteLine("Player Ratings:");
+                foreach (var player in team.Players)
+                {
+                    Console.WriteLine($"- {player.Name}: {player.CalculateOverallRating()}");
+                }
+                Console.WriteLine("-----------------------------------");
             }
         }
     }
