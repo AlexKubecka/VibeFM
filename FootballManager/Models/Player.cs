@@ -1,0 +1,176 @@
+using FootballManager.Enums;
+
+namespace FootballManager.Models
+{
+    public class Player
+    {
+        // Basic Attributes
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public Position Position { get; set; }
+        public string Nationality { get; set; }
+
+        // Physical Attributes
+        public double Height { get; set; } = 1.8; // Default height in meters
+        public double Weight { get; set; } = 75; // Default weight in kilograms
+        public int Speed { get; set; } = 50; // Default 0-100 scale
+        public int Stamina { get; set; } = 50;
+        public int Strength { get; set; } = 50;
+        public int Agility { get; set; } = 50;
+        public int JumpingReach { get; set; } = 50;
+
+        // Mental Attributes
+        public int DecisionMaking { get; set; } = 50;
+        public int Leadership { get; set; } = 50;
+        public int WorkRate { get; set; } = 50;
+        public int Teamwork { get; set; } = 50;
+        public int Vision { get; set; } = 50;
+        public int Concentration { get; set; } = 50;
+        public int Determination { get; set; } = 50;
+        public int Composure { get; set; } = 50;
+        public int Anticipation { get; set; } = 50;
+
+        // Technical Attributes
+        public int Passing { get; set; } = 50;
+        public int Shooting { get; set; } = 50;
+        public int Dribbling { get; set; } = 50;
+        public int Tackling { get; set; } = 50;
+        public int Crossing { get; set; } = 50;
+        public int Finishing { get; set; } = 50;
+        public int FirstTouch { get; set; } = 50;
+        public int Heading { get; set; } = 50;
+        public int Marking { get; set; } = 50;
+        public int Positioning { get; set; } = 50;
+
+        // Goalkeeper Attributes
+        public int Handling { get; set; } = 50;
+        public int Reflexes { get; set; } = 50;
+        public int AerialAbility { get; set; } = 50;
+        public int Communication { get; set; } = 50;
+        public int Throwing { get; set; } = 50;
+        public int OneOnOnes { get; set; } = 50;
+
+        // Personality Attributes
+        public int Professionalism { get; set; } = 50;
+        public int Sportsmanship { get; set; } = 50;
+        public int Temperament { get; set; } = 50;
+        public int Ambition { get; set; } = 50;
+        public int Loyalty { get; set; } = 50;
+
+        // Constructor with only basic attributes required
+        public Player(string name, int age, Position position, string nationality)
+        {
+            Name = name;
+            Age = age;
+            Position = position;
+            Nationality = nationality;
+        }
+
+        // Method to calculate Overall Rating based on Position
+        public double CalculateOverallRating()
+        {
+            double overallRating = 0;
+
+            switch (Position)
+            {
+                case Position.Goalkeeper:
+                    // Goalkeeper-specific attributes
+                    overallRating = (Handling + Reflexes + AerialAbility + Communication + Throwing + OneOnOnes + JumpingReach) / 7.0;
+                    break;
+
+                case Position.RightBack:
+                case Position.LeftBack:
+                    // Full-back-specific attributes
+                    overallRating = (Marking + Tackling + Positioning + Strength + Speed + Crossing + Stamina) / 7.0;
+                    break;
+
+                case Position.CenterBack:
+                    // Center-back-specific attributes
+                    overallRating = (Marking + Tackling + Heading + Positioning + Strength + Concentration + Anticipation) / 7.0;
+                    break;
+
+                case Position.DefensiveMidfielder:
+                    // Defensive midfielder-specific attributes
+                    overallRating = (Passing + Vision + Teamwork + WorkRate + Tackling + Strength + DecisionMaking) / 7.0;
+                    break;
+
+                case Position.CentralMidfielder:
+                    // Central midfielder-specific attributes
+                    overallRating = (Passing + Vision + Teamwork + WorkRate + Stamina + DecisionMaking + Dribbling) / 7.0;
+                    break;
+
+                case Position.RightWinger:
+                case Position.LeftWinger:
+                    // Winger-specific attributes
+                    overallRating = (Dribbling + Crossing + Speed + Finishing + Composure + Vision + Positioning) / 7.0;
+                    break;
+
+                case Position.Striker:
+                    // Striker-specific attributes
+                    overallRating = (Finishing + Dribbling + Shooting + Heading + Composure + Anticipation + Positioning) / 7.0;
+                    break;
+
+                default:
+                    throw new ArgumentException("Unknown position");
+            }
+
+            return Math.Round(overallRating, 2); // Round to 2 decimal places
+        }
+
+        // Method to Display Player Info
+        public override string ToString()
+        {
+            return $@"
+Player Information:
+-------------------
+Name:           {Name}
+Age:            {Age}
+Position:       {Position}
+Nationality:    {Nationality}
+Height:         {Height} m
+Weight:         {Weight} kg
+
+Physical Attributes:
+--------------------
+Speed:          {Speed}/100
+Stamina:        {Stamina}/100
+Strength:       {Strength}/100
+Agility:        {Agility}/100
+Jumping Reach:  {JumpingReach}/100
+
+Mental Attributes:
+------------------
+Decision Making: {DecisionMaking}/100
+Leadership:      {Leadership}/100
+Work Rate:       {WorkRate}/100
+Teamwork:        {Teamwork}/100
+Vision:          {Vision}/100
+Concentration:   {Concentration}/100
+Determination:   {Determination}/100
+Composure:       {Composure}/100
+Anticipation:    {Anticipation}/100
+
+Technical Attributes:
+---------------------
+Passing:         {Passing}/100
+Shooting:        {Shooting}/100
+Dribbling:       {Dribbling}/100
+Tackling:        {Tackling}/100
+Crossing:        {Crossing}/100
+Finishing:       {Finishing}/100
+First Touch:     {FirstTouch}/100
+Heading:         {Heading}/100
+Marking:         {Marking}/100
+Positioning:     {Positioning}/100
+
+Personality Attributes:
+-----------------------
+Professionalism: {Professionalism}/100
+Sportsmanship:   {Sportsmanship}/100
+Temperament:     {Temperament}/100
+Ambition:        {Ambition}/100
+Loyalty:         {Loyalty}/100
+";
+        }
+    }
+}

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballManager", "FootballManager\FootballManager.csproj", "{AC34818A-54CB-4767-9F9F-A62FB125B159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormationDisplay", "FormationDisplay\FormationDisplay.csproj", "{9FEA6584-4D81-4CB0-A6E3-78B023C865C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC34818A-54CB-4767-9F9F-A62FB125B159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC34818A-54CB-4767-9F9F-A62FB125B159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC34818A-54CB-4767-9F9F-A62FB125B159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC34818A-54CB-4767-9F9F-A62FB125B159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FEA6584-4D81-4CB0-A6E3-78B023C865C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FEA6584-4D81-4CB0-A6E3-78B023C865C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FEA6584-4D81-4CB0-A6E3-78B023C865C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FEA6584-4D81-4CB0-A6E3-78B023C865C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
