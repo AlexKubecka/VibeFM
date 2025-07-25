@@ -37,11 +37,12 @@ namespace FootballManager.Models
         {
             if (Players.Count >= 25)
             {
-                Console.WriteLine($"Cannot add player {player.Name}. The team already has 25 players.");
+                Logger.Log($"Cannot add player {player.Name}. The team already has 25 players.");
                 return;
             }
             Players.Add(player);
-            Console.WriteLine($"Player {player.Name} added to the team.");
+            player.Team = this; // Assign the team to the player
+            Logger.Log($"Player {player.Name} added to the team.");
         }
 
         // Method to Remove a Player
@@ -51,16 +52,37 @@ namespace FootballManager.Models
             if (player != null)
             {
                 Players.Remove(player);
-                Console.WriteLine($"Player {player.Name} removed from the team.");
+                player.Team = null; // Remove the team association from the player
+                Logger.Log($"Player {player.Name} removed from the team.");
             }
             else
             {
-                Console.WriteLine($"Player {playerName} not found in the team.");
+                Logger.Log($"Player {playerName} not found in the team.");
             }
         }
 
-        // Method to Display Team Info
-        public void DisplayTeam()
+        // Log Team Info (for debugging purposes)
+        public void LogTeamInfo()
+        {
+            Logger.Log($"Team: {Name} ({Nationality})");
+            Logger.Log($"Stadium: {StadiumName} (Capacity: {StadiumCapacity})");
+            Logger.Log($"Value: ${Value:N2} million");
+            Logger.Log($"Reputation: {Reputation:N2}");
+            Logger.Log("Staff Members:");
+            foreach (var staffMember in TeamStaff.Members)
+            {
+                Logger.Log($"- {staffMember.Name}, Job: {EnumHelper.GetDescription(staffMember.Job)}");
+            }
+
+            Logger.Log("Players:");
+            foreach (var player in Players)
+            {
+                Logger.Log($"- {player.Name}: {player.CalculateOverallRating()}");
+            }
+        }
+
+        // Print Team Info (dedicated printing function)
+        public void PrintTeamInfo()
         {
             Console.WriteLine($"Team: {Name} ({Nationality})");
             Console.WriteLine($"Stadium: {StadiumName} (Capacity: {StadiumCapacity})");
@@ -75,7 +97,7 @@ namespace FootballManager.Models
             Console.WriteLine("Players:");
             foreach (var player in Players)
             {
-                Console.WriteLine($"- {player.GetFormattedInfo()}");
+                Console.WriteLine($"- {player.Name}: {player.CalculateOverallRating()}");
             }
         }
 

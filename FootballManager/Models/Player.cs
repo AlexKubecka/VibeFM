@@ -126,61 +126,63 @@ namespace FootballManager.Models
             return Math.Round(overallRating, 2); // Round to 2 decimal places
         }
 
-        // Method to Display Player Info
+        // Log Player Info (for debugging purposes)
+        public void LogPlayerInfo()
+        {
+            Logger.Log($"Player: {Name} ({Nationality})");
+            Logger.Log($"Age: {Age}, Position: {EnumHelper.GetDescription(Position)}");
+            Logger.Log($"Overall Rating: {CalculateOverallRating()}");
+        }
+
+        // Print Player Info (dedicated printing function)
+        public void PrintPlayerInfo()
+        {
+            Console.WriteLine($"Player: {Name} ({Nationality})");
+            Console.WriteLine($"Age: {Age}, Position: {EnumHelper.GetDescription(Position)}");
+            Console.WriteLine($"Overall Rating: {CalculateOverallRating()}");
+        }
+
+        // Method to Display Player Info as a String
         public override string ToString()
         {
             return $@"
-Player Information:
--------------------
-Name:           {Name}
-Age:            {Age}
-Position:       {Position}
-Nationality:    {Nationality}
-Team:           {(Team != null ? Team.Name : "No Team")}
-Height:         {Height} m
-Weight:         {Weight} kg
+        Player Information:
+        -------------------
+        Name:           {Name}
+        Age:            {Age}
+        Position:       {EnumHelper.GetDescription(Position)}
+        Nationality:    {Nationality}
+        Team:           {(Team != null ? Team.Name : "No Team")}
+        Height:         {Height} m
+        Weight:         {Weight} kg
 
-Physical Attributes:
---------------------
-Speed:          {Speed}/100
-Stamina:        {Stamina}/100
-Strength:       {Strength}/100
-Agility:        {Agility}/100
-Jumping Reach:  {JumpingReach}/100
+        Physical Attributes:
+        --------------------
+        Speed:          {Speed}/100
+        Stamina:        {Stamina}/100
+        Strength:       {Strength}/100
+        Agility:        {Agility}/100
 
-Mental Attributes:
-------------------
-Decision Making: {DecisionMaking}/100
-Leadership:      {Leadership}/100
-Work Rate:       {WorkRate}/100
-Teamwork:        {Teamwork}/100
-Vision:          {Vision}/100
-Concentration:   {Concentration}/100
-Determination:   {Determination}/100
-Composure:       {Composure}/100
-Anticipation:    {Anticipation}/100
+        Skill Attributes:
+        -----------------
+        Handling:       {Handling}/100
+        Reflexes:       {Reflexes}/100
+        Communication:  {Communication}/100
+        Aerial Ability: {AerialAbility}/100
+        Jumping Reach:  {JumpingReach}/100
+        Passing:        {Passing}/100
+        Shooting:       {Shooting}/100
+        Dribbling:      {Dribbling}/100
+        Tackling:       {Tackling}/100
+        Crossing:       {Crossing}/100
+        Finishing:      {Finishing}/100
+        Positioning:    {Positioning}/100
+        Heading:        {Heading}/100
+        Composure:      {Composure}/100
+        Anticipation:   {Anticipation}/100
 
-Technical Attributes:
----------------------
-Passing:         {Passing}/100
-Shooting:        {Shooting}/100
-Dribbling:       {Dribbling}/100
-Tackling:        {Tackling}/100
-Crossing:        {Crossing}/100
-Finishing:       {Finishing}/100
-First Touch:     {FirstTouch}/100
-Heading:         {Heading}/100
-Marking:         {Marking}/100
-Positioning:     {Positioning}/100
-
-Personality Attributes:
------------------------
-Professionalism: {Professionalism}/100
-Sportsmanship:   {Sportsmanship}/100
-Temperament:     {Temperament}/100
-Ambition:        {Ambition}/100
-Loyalty:         {Loyalty}/100
-";
+        Overall Rating: {CalculateOverallRating()}
+        ";
         }
     }
 }

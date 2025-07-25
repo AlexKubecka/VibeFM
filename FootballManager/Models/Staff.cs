@@ -14,7 +14,7 @@ namespace FootballManager.Models
         public void AddStaffMember(StaffMember staffMember)
         {
             Members.Add(staffMember);
-            Console.WriteLine($"Staff Member {staffMember.Name} added as {EnumHelper.GetDescription(staffMember.Job)}.");
+            Logger.Log($"Staff Member {staffMember.Name} added as {EnumHelper.GetDescription(staffMember.Job)}.");
         }
 
         // Method to Remove a Staff Member
@@ -24,11 +24,11 @@ namespace FootballManager.Models
             if (staffMember != null)
             {
                 Members.Remove(staffMember);
-                Console.WriteLine($"Staff Member {staffMember.Name} removed.");
+                Logger.Log($"Staff Member {staffMember.Name} removed.");
             }
             else
             {
-                Console.WriteLine($"Staff Member {staffName} not found.");
+                Logger.Log($"Staff Member {staffName} not found.");
             }
         }
 
@@ -47,16 +47,17 @@ namespace FootballManager.Models
     public class StaffMember
     {
         public string Name { get; set; }
-        public Job Job { get; set; } // Role of the staff member (e.g., Manager, Assistant Manager, Coach, etc.)
-        public int TacticalKnowledge { get; set; } = 50; // Default 0-100 scale
-        public int Leadership { get; set; } = 50;
-        public int Communication { get; set; } = 50;
-        public int DecisionMaking { get; set; } = 50;
-        public int TrainingKnowledge { get; set; } = 50;
-        public int FitnessKnowledge { get; set; } = 50;
-        public int MedicalExpertise { get; set; } = 50;
-        public int TalentIdentification { get; set; } = 50;
-        public int DataAnalysis { get; set; } = 50;
+        public Job Job { get; set; }
+        public double TacticalKnowledge { get; set; }
+        public double Leadership { get; set; }
+        public double DecisionMaking { get; set; }
+        public double Communication { get; set; }
+        public double TrainingKnowledge { get; set; }
+        public double FitnessKnowledge { get; set; } // Specific to Fitness Coach
+        public double GoalkeepingKnowledge { get; set; } // Specific to Goalkeeping Coach
+        public double MedicalKnowledge { get; set; } // Specific to Physio
+        public double ScoutingAbility { get; set; } // Specific to Scout
+        public double AnalyticalAbility { get; set; } // Specific to Analyst
 
         public StaffMember(string name, Job job)
         {
@@ -88,27 +89,27 @@ namespace FootballManager.Models
 
                 case Job.FitnessCoach:
                     // Fitness Coach-specific attributes
-                    overallRating = (FitnessKnowledge + Communication + TrainingKnowledge) / 3.0;
+                    overallRating = FitnessKnowledge;
                     break;
 
                 case Job.GoalkeepingCoach:
                     // Goalkeeping Coach-specific attributes
-                    overallRating = (TrainingKnowledge + Communication + TacticalKnowledge) / 3.0;
+                    overallRating = GoalkeepingKnowledge;
                     break;
 
                 case Job.Physio:
                     // Physio-specific attributes
-                    overallRating = (MedicalExpertise + Communication + DecisionMaking) / 3.0;
+                    overallRating = MedicalKnowledge;
                     break;
 
                 case Job.Scout:
                     // Scout-specific attributes
-                    overallRating = (TalentIdentification + Communication + DecisionMaking) / 3.0;
+                    overallRating = ScoutingAbility;
                     break;
 
                 case Job.Analyst:
                     // Analyst-specific attributes
-                    overallRating = (DataAnalysis + TacticalKnowledge + Communication) / 3.0;
+                    overallRating = AnalyticalAbility;
                     break;
 
                 default:
