@@ -5,11 +5,15 @@ namespace FootballManager.Models
 {
     public class Player
     {
+        // Db Attributes
+        public int Id { get; set; } // Primary key
+        public int? TeamId { get; set; } // Foreign key
+
         // Basic Attributes
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Age { get; set; }
         public Position Position { get; set; }
-        public string Nationality { get; set; }
+        public string Nationality { get; set; } = string.Empty;
         public Team? Team { get; set; } // Reference to the team the player belongs to
 
         // Physical Attributes
@@ -58,6 +62,9 @@ namespace FootballManager.Models
         public int Temperament { get; set; } = 50;
         public int Ambition { get; set; } = 50;
         public int Loyalty { get; set; } = 50;
+
+        // Parameterless constructor for EF Core
+        public Player() { }
 
         // Constructor with only basic attributes required
         public Player(string name, int age, Position position, string nationality, Team? team = null)

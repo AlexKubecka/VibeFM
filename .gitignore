@@ -1,44 +1,41 @@
-# Ignore build output directories
+# Ignore SQLite database files
+*.db*
+*.sqlite
+
+# Ignore migrations folder (optional, if you want to exclude EF Core migrations)
+Migrations/
+
+# Ignore build outputs
 bin/
 obj/
 
 # Ignore user-specific files
 *.user
-*.vs
+*.suo
+*.vscode
 .vscode/
 
-# Ignore Visual Studio solution-specific files
-*.suo
-*.cache
-*.pdb
-*.ilk
+# Ignore IDE-specific files
+.idea/
+*.csproj.user
+
+# Ignore logs
 *.log
 
 # Ignore temporary files
 *.tmp
 *.bak
 *.swp
-*.DS_Store
 
-# Ignore compiled files
-*.exe
+# Ignore compiled DLLs and executables
 *.dll
+*.exe
+*.pdb
 
-# Ignore NuGet packages
-*.nupkg
-packages/
-.nuget/
+# Ignore coverage reports
+coverage/
+*.coverage
+*.coveragexml
 
 # Ignore generated files
-GeneratedFiles/
-
-# Ignore Windows-specific files
-Thumbs.db
-desktop.ini
-
-# Ignore debug and release folders
-Debug/
-Release/
-
-# Ignore IDE-specific files
-.idea/
+Generated/

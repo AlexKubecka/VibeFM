@@ -9,10 +9,13 @@ namespace FootballManager.Models
 {
     public class Team
     {
+        // Db Attribute
+        public int Id { get; set; } // Primary key
+
         // Basic Attributes
         public string Name { get; set; }
         public string Nationality { get; set; }
-        public Staff TeamStaff { get; set; } = new Staff(); // Reference to the Staff class
+        public List<StaffMember> StaffMembers { get; set; } = new List<StaffMember>(); // Direct collection of staff members
         public List<Player> Players { get; set; } = new List<Player>();
 
         // Value and Reputation Attributes
@@ -69,7 +72,7 @@ namespace FootballManager.Models
             Logger.Log($"Value: ${Value:N2} million");
             Logger.Log($"Reputation: {Reputation:N2}");
             Logger.Log("Staff Members:");
-            foreach (var staffMember in TeamStaff.Members)
+            foreach (var staffMember in StaffMembers)
             {
                 Logger.Log($"- {staffMember.Name}, Job: {EnumHelper.GetDescription(staffMember.Job)}");
             }
@@ -89,7 +92,7 @@ namespace FootballManager.Models
             Console.WriteLine($"Value: ${Value:N2} million");
             Console.WriteLine($"Reputation: {Reputation:N2}");
             Console.WriteLine("Staff Members:");
-            foreach (var staffMember in TeamStaff.Members)
+            foreach (var staffMember in StaffMembers)
             {
                 Console.WriteLine($"- {staffMember.Name}, Job: {EnumHelper.GetDescription(staffMember.Job)}");
             }
@@ -109,21 +112,51 @@ namespace FootballManager.Models
             // Calculate average player rating
             double playerRating = Players.Average(p => p.CalculateOverallRating());
 
-            // Get manager and assistant manager ratings
-            double managerRating = TeamStaff.Members
+            // Get ratings for all staff roles
+            double managerRating = StaffMembers
                 .Where(m => m.Job == Job.Manager)
                 .Select(m => m.CalculateOverallRating())
                 .FirstOrDefault();
 
-            double assistantManagerRating = TeamStaff.Members
+            double assistantManagerRating = StaffMembers
                 .Where(m => m.Job == Job.AssistantManager)
                 .Select(m => m.CalculateOverallRating())
                 .FirstOrDefault();
 
-            // Combine ratings (weighted average)
-            double overallRating = Math.Round((playerRating * 0.7) + (managerRating * 0.2) + (assistantManagerRating * 0.1), 2);
+            double coachRating = StaffMembers
+                .Where(m => m.Job == Job.Coach)
+                .Select(m => m.CalculateOverallRating())
+                .FirstOrDefault();
 
-            return overallRating;
+            double fitnessCoachRating = StaffMembers
+                .Where(m => m.Job == Job.FitnessCoach)
+                .Select(m => m.CalculateOverallRating())
+                .FirstOrDefault();
+
+            double goalkeepingCoachRating = StaffMembers
+                .Where(m => m.Job == Job.GoalkeepingCoach)
+                .Select(m => m.CalculateOverallRating())
+                .FirstOrDefault();
+
+            double physioRating = StaffMembers
+                .Where(m => m.Job == Job.Physio)
+                .Select(m => m.CalculateOverallRating())
+                .FirstOrDefault();
+
+            double scoutRating = StaffMembers
+                .Where(m => m.Job == Job.Scout)
+                .Select(m => m.CalculateOverallRating())
+                .FirstOrDefault();
+
+            double analystRating = StaffMembers
+                .Where(m => m.Job == Job.Analyst)
+                .Select(m => m.CalculateOverallRating())
+                .FirstOrDefault();
+
+            // Combine ratings (weighted average)
+            return Math.Round((playerRating * 0.5) + (managerRating * 0.2) + (assistantManagerRating * 0.1) +
+                            (coachRating * 0.05) + (fitnessCoachRating * 0.05) + (goalkeepingCoachRating * 0.05) +
+                            (physioRating * 0.025) + (scoutRating * 0.025) + (analystRating * 0.025), 2);
         }
     }
 }

@@ -18,51 +18,53 @@ namespace FootballManager.Utilities
                 Reputation = reputation
             };
 
-            // Add staff members
-            team.TeamStaff.AddStaffMember(new StaffMember($"Manager {name}", Job.Manager)
+            // Add staff members directly to the StaffMembers collection
+            team.StaffMembers.Add(new StaffMember($"Manager {name}", Job.Manager)
             {
                 TacticalKnowledge = _random.Next(70, 100),
                 Leadership = _random.Next(70, 100),
                 DecisionMaking = _random.Next(70, 100)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Assistant Manager {name}", Job.AssistantManager)
+            team.StaffMembers.Add(new StaffMember($"Assistant Manager {name}", Job.AssistantManager)
             {
                 Leadership = _random.Next(60, 90),
                 Communication = _random.Next(60, 90),
                 TrainingKnowledge = _random.Next(60, 90)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Coach {name}", Job.Coach)
+            team.StaffMembers.Add(new StaffMember($"Coach {name}", Job.Coach)
             {
-                TacticalKnowledge = _random.Next(60, 90)
+                TacticalKnowledge = _random.Next(60, 90),
+                Communication = _random.Next(60, 90),
+                TrainingKnowledge = _random.Next(60, 90)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Fitness Coach {name}", Job.FitnessCoach)
+            team.StaffMembers.Add(new StaffMember($"Fitness Coach {name}", Job.FitnessCoach)
             {
                 FitnessKnowledge = _random.Next(60, 90)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Goalkeeping Coach {name}", Job.GoalkeepingCoach)
+            team.StaffMembers.Add(new StaffMember($"Goalkeeping Coach {name}", Job.GoalkeepingCoach)
             {
                 GoalkeepingKnowledge = _random.Next(60, 90)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Physio {name}", Job.Physio)
+            team.StaffMembers.Add(new StaffMember($"Physio {name}", Job.Physio)
             {
                 MedicalKnowledge = _random.Next(60, 90)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Scout {name}", Job.Scout)
+            team.StaffMembers.Add(new StaffMember($"Scout {name}", Job.Scout)
             {
                 ScoutingAbility = _random.Next(60, 90)
             });
 
-            team.TeamStaff.AddStaffMember(new StaffMember($"Analyst {name}", Job.Analyst)
+            team.StaffMembers.Add(new StaffMember($"Analyst {name}", Job.Analyst)
             {
                 AnalyticalAbility = _random.Next(60, 90)
             });
-            
+
             return team;
         }
 

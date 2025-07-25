@@ -46,6 +46,9 @@ namespace FootballManager.Models
     // StaffMember Class
     public class StaffMember
     {
+        public int Id { get; set; } // Primary key
+        public int? TeamId { get; set; } // Foreign key
+        public Team? Team { get; set; } // Navigation property
         public string Name { get; set; }
         public Job Job { get; set; }
         public double TacticalKnowledge { get; set; }
