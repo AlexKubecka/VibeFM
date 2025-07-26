@@ -4,16 +4,25 @@ using FootballManager.Enums; // For enums like Job and Position
 using FootballManager.Models; // For League, Team, Player, and Staff classes
 using FootballManager.Utilities; // For LeagueFactory and other utility classes
 using FootballManager.Data; // For FootballManagerDbContext
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 
 namespace FootballManager
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             // Enable debug mode
             Logger.DebugMode = false;
+            var teamsAndPlayers = await TransfermarktScraper.GetPremierLeagueTeamsAndPlayersAsync();
+            TransfermarktScraper.SaveTeamsAndPlayersToJson(teamsAndPlayers, "Data/teams_and_players.json");
+
+            return;
+            
             using (var dbContext = new FootballManagerDbContext())
 {
     ClearDatabase(dbContext);

@@ -1,0 +1,242 @@
+{
+  "Manchester City": [
+    {
+      "Number": "31",
+      "Name": "Ederson",
+      "DobAndAge": "Aug 17, 1993 (31)",
+      "Nationality": "Brazil",
+      "MarketValue": "\u20AC20.00m"
+    },
+    {
+      "Number": "18",
+      "Name": "Stefan Ortega",
+      "DobAndAge": "Nov 6, 1992 (32)",
+      "Nationality": "Germany",
+      "MarketValue": "\u20AC8.00m"
+    },
+    {
+      "Number": "13",
+      "Name": "Marcus Bettinelli",
+      "DobAndAge": "May 24, 1992 (33)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC600k"
+    },
+    {
+      "Number": "3",
+      "Name": "R\u00FAben Dias",
+      "DobAndAge": "May 14, 1997 (28)",
+      "Nationality": "Portugal",
+      "MarketValue": "\u20AC65.00m"
+    },
+    {
+      "Number": "45",
+      "Name": "Abdukodir Khusanov",
+      "DobAndAge": "Feb 29, 2004 (21)",
+      "Nationality": "Uzbekistan",
+      "MarketValue": "\u20AC35.00m"
+    },
+    {
+      "Number": "22",
+      "Name": "Vitor Reis",
+      "DobAndAge": "Jan 12, 2006 (19)",
+      "Nationality": "Brazil",
+      "MarketValue": "\u20AC30.00m"
+    },
+    {
+      "Number": "25",
+      "Name": "Manuel Akanji",
+      "DobAndAge": "Jul 19, 1995 (30)",
+      "Nationality": "Switzerland",
+      "MarketValue": "\u20AC28.00m"
+    },
+    {
+      "Number": "5",
+      "Name": "John Stones",
+      "DobAndAge": "May 28, 1994 (31)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC25.00m"
+    },
+    {
+      "Number": "6",
+      "Name": "Nathan Ak\u00E9",
+      "DobAndAge": "Feb 18, 1995 (30)",
+      "Nationality": "Netherlands",
+      "MarketValue": "\u20AC25.00m"
+    },
+    {
+      "Number": "24",
+      "Name": "Josko Gvardiol",
+      "DobAndAge": "Jan 23, 2002 (23)",
+      "Nationality": "Croatia",
+      "MarketValue": "\u20AC75.00m"
+    },
+    {
+      "Number": "21",
+      "Name": "Rayan A\u00EFt-Nouri",
+      "DobAndAge": "Jun 6, 2001 (24)",
+      "Nationality": "Algeria",
+      "MarketValue": "\u20AC35.00m"
+    },
+    {
+      "Number": "97",
+      "Name": "Josh Wilson-Esbrand\u0026nbsp;",
+      "DobAndAge": "Dec 26, 2002 (22)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC4.00m"
+    },
+    {
+      "Number": "82",
+      "Name": "Rico Lewis",
+      "DobAndAge": "Nov 21, 2004 (20)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC40.00m"
+    },
+    {
+      "Number": "78",
+      "Name": "Issa Kabor\u00E9",
+      "DobAndAge": "May 12, 2001 (24)",
+      "Nationality": "Burkina Faso",
+      "MarketValue": "\u20AC4.00m"
+    },
+    {
+      "Number": "16",
+      "Name": "Rodri",
+      "DobAndAge": "Jun 22, 1996 (29)",
+      "Nationality": "Spain",
+      "MarketValue": "\u20AC110.00m"
+    },
+    {
+      "Number": "-",
+      "Name": "Kalvin Phillips",
+      "DobAndAge": "Dec 2, 1995 (29)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC12.00m"
+    },
+    {
+      "Number": "4",
+      "Name": "Tijjani Reijnders",
+      "DobAndAge": "Jul 29, 1998 (26)",
+      "Nationality": "Netherlands",
+      "MarketValue": "\u20AC60.00m"
+    },
+    {
+      "Number": "14",
+      "Name": "Nico Gonz\u00E1lez",
+      "DobAndAge": "Jan 3, 2002 (23)",
+      "Nationality": "Spain",
+      "MarketValue": "\u20AC40.00m"
+    },
+    {
+      "Number": "27",
+      "Name": "Matheus Nunes",
+      "DobAndAge": "Aug 27, 1998 (26)",
+      "Nationality": "Portugal",
+      "MarketValue": "\u20AC35.00m"
+    },
+    {
+      "Number": "8",
+      "Name": "Mateo Kovacic\u0026nbsp;",
+      "DobAndAge": "May 6, 1994 (31)",
+      "Nationality": "Croatia",
+      "MarketValue": "\u20AC20.00m"
+    },
+    {
+      "Number": "-",
+      "Name": "Sverre Nypan",
+      "DobAndAge": "Dec 19, 2006 (18)",
+      "Nationality": "Norway",
+      "MarketValue": "\u20AC15.00m"
+    },
+    {
+      "Number": "19",
+      "Name": "\u0130lkay G\u00FCndo\u011Fan",
+      "DobAndAge": "Oct 24, 1990 (34)",
+      "Nationality": "Germany",
+      "MarketValue": "\u20AC5.00m"
+    },
+    {
+      "Number": "20",
+      "Name": "Bernardo Silva\u0026nbsp;",
+      "DobAndAge": "Aug 10, 1994 (30)",
+      "Nationality": "Portugal",
+      "MarketValue": "\u20AC38.00m"
+    },
+    {
+      "Number": "87",
+      "Name": "James McAtee",
+      "DobAndAge": "Oct 18, 2002 (22)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC20.00m"
+    },
+    {
+      "Number": "30",
+      "Name": "Claudio Echeverri",
+      "DobAndAge": "Jan 2, 2006 (19)",
+      "Nationality": "Argentina",
+      "MarketValue": "\u20AC18.00m"
+    },
+    {
+      "Number": "75",
+      "Name": "Nico O\u0027Reilly",
+      "DobAndAge": "Mar 21, 2005 (20)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC18.00m"
+    },
+    {
+      "Number": "11",
+      "Name": "J\u00E9r\u00E9my Doku",
+      "DobAndAge": "May 27, 2002 (23)",
+      "Nationality": "Belgium",
+      "MarketValue": "\u20AC50.00m"
+    },
+    {
+      "Number": "10",
+      "Name": "Jack Grealish",
+      "DobAndAge": "Sep 10, 1995 (29)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC28.00m"
+    },
+    {
+      "Number": "47",
+      "Name": "Phil Foden",
+      "DobAndAge": "May 28, 2000 (25)",
+      "Nationality": "England",
+      "MarketValue": "\u20AC100.00m"
+    },
+    {
+      "Number": "26",
+      "Name": "Savinho",
+      "DobAndAge": "Apr 10, 2004 (21)",
+      "Nationality": "Brazil",
+      "MarketValue": "\u20AC50.00m"
+    },
+    {
+      "Number": "29",
+      "Name": "Rayan Cherki",
+      "DobAndAge": "Aug 17, 2003 (21)",
+      "Nationality": "France",
+      "MarketValue": "\u20AC45.00m"
+    },
+    {
+      "Number": "52",
+      "Name": "Oscar Bobb",
+      "DobAndAge": "Jul 12, 2003 (22)",
+      "Nationality": "Norway",
+      "MarketValue": "\u20AC25.00m"
+    },
+    {
+      "Number": "9",
+      "Name": "Erling Haaland",
+      "DobAndAge": "Jul 21, 2000 (25)",
+      "Nationality": "Norway",
+      "MarketValue": "\u20AC180.00m"
+    },
+    {
+      "Number": "7",
+      "Name": "Omar Marmoush",
+      "DobAndAge": "Feb 7, 1999 (26)",
+      "Nationality": "Egypt",
+      "MarketValue": "\u20AC75.00m"
+    }
+  ]
+}
