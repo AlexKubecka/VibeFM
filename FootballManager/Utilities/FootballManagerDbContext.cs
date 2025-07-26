@@ -9,10 +9,24 @@ namespace FootballManager.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<StaffMember> StaffMembers { get; set; }
 
+            // Constructor for ASP.NET Core DI
+        public FootballManagerDbContext(DbContextOptions<FootballManagerDbContext> options)
+            : base(options)
+        {
+        }
+
+        // Parameterless constructor for console app
+        public FootballManagerDbContext() : base()
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseSqlite("Data Source=footballmanager.db");
         }
+    }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

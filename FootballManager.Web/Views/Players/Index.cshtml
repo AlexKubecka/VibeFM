@@ -1,0 +1,35 @@
+@model IEnumerable<FootballManager.Models.Player>
+
+@{
+    ViewData["Title"] = "Players";
+}
+
+<h1>Players</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Position</th>
+            <th>Nationality</th>
+            <th>Team</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var player in Model)
+{
+    <tr>
+        <td>@player.Name</td>
+        <td>@player.Age</td>
+        <td>@player.Position</td>
+        <td>@player.Nationality</td>
+        <td>@(player.Team != null ? player.Team.Name : "Free Agent")</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@player.Id">Details</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>

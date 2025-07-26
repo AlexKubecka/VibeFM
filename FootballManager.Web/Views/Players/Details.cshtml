@@ -1,0 +1,147 @@
+@model FootballManager.Models.Player
+
+@{
+    ViewData["Title"] = "Player Details";
+}
+
+<h1>@Model.Name</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">Age</dt>
+    <dd class="col-sm-10">@Model.Age</dd>
+
+    <dt class="col-sm-2">Position</dt>
+    <dd class="col-sm-10">@Model.Position</dd>
+
+    <dt class="col-sm-2">Nationality</dt>
+    <dd class="col-sm-10">@Model.Nationality</dd>
+
+    <dt class="col-sm-2">Team</dt>
+    <dd class="col-sm-10">
+        @if (Model.Team != null)
+        {
+            <a asp-controller="Teams" asp-action="Details" asp-route-id="@Model.Team.Id">@Model.Team.Name</a>
+        }
+        else
+        {
+            <span>Free Agent</span>
+        }
+    </dd>
+</dl>
+
+<h3>Physical Attributes</h3>
+<table class="table table-bordered w-auto">
+    <tr>
+        <th>Height (m)</th>
+        <th>Weight (kg)</th>
+        <th>Speed</th>
+        <th>Stamina</th>
+        <th>Strength</th>
+        <th>Agility</th>
+        <th>Jumping Reach</th>
+    </tr>
+    <tr>
+        <td>@Model.Height</td>
+        <td>@Model.Weight</td>
+        <td>@Model.Speed</td>
+        <td>@Model.Stamina</td>
+        <td>@Model.Strength</td>
+        <td>@Model.Agility</td>
+        <td>@Model.JumpingReach</td>
+    </tr>
+</table>
+
+<h3>Mental Attributes</h3>
+<table class="table table-bordered w-auto">
+    <tr>
+        <th>Decision Making</th>
+        <th>Leadership</th>
+        <th>Work Rate</th>
+        <th>Teamwork</th>
+        <th>Vision</th>
+        <th>Concentration</th>
+        <th>Determination</th>
+        <th>Composure</th>
+        <th>Anticipation</th>
+    </tr>
+    <tr>
+        <td>@Model.DecisionMaking</td>
+        <td>@Model.Leadership</td>
+        <td>@Model.WorkRate</td>
+        <td>@Model.Teamwork</td>
+        <td>@Model.Vision</td>
+        <td>@Model.Concentration</td>
+        <td>@Model.Determination</td>
+        <td>@Model.Composure</td>
+        <td>@Model.Anticipation</td>
+    </tr>
+</table>
+
+<h3>Technical Attributes</h3>
+<table class="table table-bordered w-auto">
+    <tr>
+        <th>Passing</th>
+        <th>Shooting</th>
+        <th>Dribbling</th>
+        <th>Tackling</th>
+        <th>Crossing</th>
+        <th>Finishing</th>
+        <th>First Touch</th>
+        <th>Heading</th>
+        <th>Marking</th>
+        <th>Positioning</th>
+    </tr>
+    <tr>
+        <td>@Model.Passing</td>
+        <td>@Model.Shooting</td>
+        <td>@Model.Dribbling</td>
+        <td>@Model.Tackling</td>
+        <td>@Model.Crossing</td>
+        <td>@Model.Finishing</td>
+        <td>@Model.FirstTouch</td>
+        <td>@Model.Heading</td>
+        <td>@Model.Marking</td>
+        <td>@Model.Positioning</td>
+    </tr>
+</table>
+
+<h3>Goalkeeper Attributes</h3>
+<table class="table table-bordered w-auto">
+    <tr>
+        <th>Handling</th>
+        <th>Reflexes</th>
+        <th>Aerial Ability</th>
+        <th>Communication</th>
+        <th>Throwing</th>
+        <th>One On Ones</th>
+    </tr>
+    <tr>
+        <td>@Model.Handling</td>
+        <td>@Model.Reflexes</td>
+        <td>@Model.AerialAbility</td>
+        <td>@Model.Communication</td>
+        <td>@Model.Throwing</td>
+        <td>@Model.OneOnOnes</td>
+    </tr>
+</table>
+
+<h3>Personality Attributes</h3>
+<table class="table table-bordered w-auto">
+    <tr>
+        <th>Professionalism</th>
+        <th>Sportsmanship</th>
+        <th>Temperament</th>
+        <th>Ambition</th>
+        <th>Loyalty</th>
+    </tr>
+    <tr>
+        <td>@Model.Professionalism</td>
+        <td>@Model.Sportsmanship</td>
+        <td>@Model.Temperament</td>
+        <td>@Model.Ambition</td>
+        <td>@Model.Loyalty</td>
+    </tr>
+</table>
+
+<a asp-action="Index">Back to List</a>

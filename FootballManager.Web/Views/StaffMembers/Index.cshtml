@@ -1,0 +1,40 @@
+@model IEnumerable<FootballManager.Models.StaffMember>
+
+@{
+    ViewData["Title"] = "Staff Members";
+}
+
+<h1>Staff Members</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Job</th>
+            <th>Team</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var staff in Model)
+{
+    <tr>
+        <td>@staff.Name</td>
+        <td>@staff.Job</td>
+        <td>
+            @if (staff.Team != null)
+            {
+                <a asp-controller="Teams" asp-action="Details" asp-route-id="@staff.Team.Id">@staff.Team.Name</a>
+            }
+            else
+            {
+                <span>Free Agent</span>
+            }
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@staff.Id">Details</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
