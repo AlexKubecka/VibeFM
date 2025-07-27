@@ -1,0 +1,82 @@
+{
+  "Manchester City": {
+    "StadiumName": "Etihad Stadium",
+    "StadiumCapacity": 55097
+  },
+  "Arsenal FC": {
+    "StadiumName": "Emirates Stadium",
+    "StadiumCapacity": 60704
+  },
+  "Chelsea FC": {
+    "StadiumName": "Stamford Bridge",
+    "StadiumCapacity": 41631
+  },
+  "Liverpool FC": {
+    "StadiumName": "Anfield",
+    "StadiumCapacity": 61276
+  },
+  "Tottenham Hotspur": {
+    "StadiumName": "Tottenham Hotspur Stadium",
+    "StadiumCapacity": 62850
+  },
+  "Manchester United": {
+    "StadiumName": "Old Trafford",
+    "StadiumCapacity": 74879
+  },
+  "Newcastle United": {
+    "StadiumName": "St James\u0027 Park",
+    "StadiumCapacity": 52258
+  },
+  "Brighton & Hove Albion": {
+    "StadiumName": "AMEX Stadium",
+    "StadiumCapacity": 31876
+  },
+  "Aston Villa": {
+    "StadiumName": "Villa Park",
+    "StadiumCapacity": 42918
+  },
+  "Crystal Palace": {
+    "StadiumName": "Selhurst Park",
+    "StadiumCapacity": 25486
+  },
+  "AFC Bournemouth": {
+    "StadiumName": "Vitality Stadium",
+    "StadiumCapacity": 11307
+  },
+  "Nottingham Forest": {
+    "StadiumName": "The City Ground",
+    "StadiumCapacity": 30404
+  },
+  "Brentford FC": {
+    "StadiumName": "Gtech Community Stadium",
+    "StadiumCapacity": 17250
+  },
+  "West Ham United": {
+    "StadiumName": "London Stadium",
+    "StadiumCapacity": 62500
+  },
+  "Fulham FC": {
+    "StadiumName": "Craven Cottage",
+    "StadiumCapacity": 29589
+  },
+  "Wolverhampton Wanderers": {
+    "StadiumName": "Molineux Stadium",
+    "StadiumCapacity": 31750
+  },
+  "Everton FC": {
+    "StadiumName": "Goodison Park",
+    "StadiumCapacity": 39414
+  },
+  "Leeds United": {
+    "StadiumName": "Elland Road",
+    "StadiumCapacity": 37890
+  },
+  "Burnley FC": {
+    "StadiumName": "Turf Moor",
+    "StadiumCapacity": 21994
+  },
+  "Sunderland AFC": {
+    "StadiumName": "Stadium of Light",
+    "StadiumCapacity": 48707
+  }
+}

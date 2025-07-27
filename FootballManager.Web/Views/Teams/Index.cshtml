@@ -10,6 +10,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>League</th>
             <th>Nationality</th>
             <th>Stadium Name</th>
             <th>Stadium Capacity</th>
@@ -22,15 +23,13 @@
 @foreach (var team in Model)
 {
     <tr>
-        <td>@team.Name</td>
+        <td><a asp-action="Details" asp-route-id="@team.Id">@team.Name</a></td>
+        <td><a asp-controller="Leagues" asp-action="Details" asp-route-id="@team.LeagueName">@team.LeagueName</a></td>
         <td>@team.Nationality</td>
         <td>@team.StadiumName</td>
         <td>@team.StadiumCapacity</td>
         <td>@team.Value</td>
         <td>@team.Reputation</td>
-        <td>
-            <a asp-action="Details" asp-route-id="@team.Id">Details</a>
-        </td>
     </tr>
 }
     </tbody>

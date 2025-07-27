@@ -8,12 +8,15 @@ namespace FootballManager.Models
 {
     public class League
     {
+        public int Id { get; set; }
         public string Name { get; set; }
+        public string Nation { get; set; }
         public List<Team> Teams { get; set; } = new List<Team>();
 
-        public League(string name)
+        public League(string name, string nation)
         {
             Name = name;
+            Nation = nation;
         }
 
         // Simulate matches between all teams (home and away)

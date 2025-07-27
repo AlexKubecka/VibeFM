@@ -32,10 +32,10 @@ namespace FootballManager.Utilities
             Logger.Log($"Loaded {_teamNames.Count} team names and {_playerNames.Count} player names.");
         }
 
-        public League CreateLeague(string leagueName)
+        public League CreateLeague(string leagueName, string leagueNation)
         {
             Logger.Log($"Creating league: {leagueName}");
-            League league = new League(leagueName);
+            League league = new League(leagueName, leagueNation);
 
             for (int i = 0; i < _teamNames.Count; i++)
             {
@@ -47,6 +47,11 @@ namespace FootballManager.Utilities
 
                 // Create a team using the TeamFactory
                 Team team = _teamFactory.CreateTeam(_teamNames[i], teamReputation, stadiumCapacity);
+                team.Wins = 0;
+                team.Draws = 0;
+                team.Losses = 0;
+                team.GoalsFor = 0;
+                team.GoalsAgainst = 0;
 
                 // Add 11 players to the team using the PlayerFactory
                 for (int j = 0; j < 11; j++)
@@ -54,7 +59,7 @@ namespace FootballManager.Utilities
                     Position position = GetRandomPosition();
                     string playerName = GetUniquePlayerName();
                     Logger.Log($"Adding player: {playerName} (Position: {position})");
-                    team.AddPlayer(_playerFactory.CreatePlayer(playerName, position, team.Value, team.Reputation));
+                    team.AddPlayer(_playerFactory.CreatePlayer(playerName, position.ToString(), team.Value, team.Reputation));
                 }
 
                 // Add the team to the league

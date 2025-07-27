@@ -17,6 +17,7 @@
     <dt class="col-sm-2">Nationality</dt>
     <dd class="col-sm-10">@Model.Nationality</dd>
 
+
     <dt class="col-sm-2">Team</dt>
     <dd class="col-sm-10">
         @if (Model.Team != null)
@@ -28,6 +29,9 @@
             <span>Free Agent</span>
         }
     </dd>
+
+    <dt class="col-sm-2">Market Value</dt>
+    <dd class="col-sm-10">€@Model.MarketValue m</dd>
 </dl>
 
 <h3>Physical Attributes</h3>

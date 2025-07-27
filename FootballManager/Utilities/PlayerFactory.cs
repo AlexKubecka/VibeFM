@@ -8,7 +8,7 @@ namespace FootballManager.Utilities
     {
         private readonly Random _random = new Random();
 
-        public Player CreatePlayer(string name, Position position, double teamValue, double teamReputation)
+        public Player CreatePlayer(string name, string position, double teamValue, double teamReputation)
         {
             // Adjust ranges based on team value and reputation
             int minAttribute = (int)Math.Max(50, teamReputation); // Minimum attribute value
@@ -16,59 +16,54 @@ namespace FootballManager.Utilities
 
             Player player = new Player(name, _random.Next(18, 35), position, "International");
 
-            switch (position)
+            string pos = position.ToLowerInvariant();
+            switch (pos)
             {
-                case Position.Goalkeeper:
+                case "goalkeeper":
                     player.Handling = _random.Next(minAttribute, maxAttribute);
                     player.Reflexes = _random.Next(minAttribute, maxAttribute);
                     player.Communication = _random.Next(minAttribute, maxAttribute);
                     player.AerialAbility = _random.Next(minAttribute, maxAttribute);
                     player.JumpingReach = _random.Next(minAttribute, maxAttribute);
                     break;
-
-                case Position.RightBack:
-                case Position.LeftBack:
+                case "right back":
+                case "left back":
                     player.Marking = _random.Next(minAttribute, maxAttribute);
                     player.Tackling = _random.Next(minAttribute, maxAttribute);
                     player.Positioning = _random.Next(minAttribute, maxAttribute);
                     player.Speed = _random.Next(minAttribute, maxAttribute);
                     player.Crossing = _random.Next(minAttribute, maxAttribute);
                     break;
-
-                case Position.CenterBack:
+                case "center back":
                     player.Marking = _random.Next(minAttribute, maxAttribute);
                     player.Tackling = _random.Next(minAttribute, maxAttribute);
                     player.Heading = _random.Next(minAttribute, maxAttribute);
                     player.Positioning = _random.Next(minAttribute, maxAttribute);
                     player.Strength = _random.Next(minAttribute, maxAttribute);
                     break;
-
-                case Position.DefensiveMidfielder:
+                case "defensive midfielder":
                     player.Passing = _random.Next(minAttribute, maxAttribute);
                     player.Vision = _random.Next(minAttribute, maxAttribute);
                     player.Teamwork = _random.Next(minAttribute, maxAttribute);
                     player.WorkRate = _random.Next(minAttribute, maxAttribute);
                     player.Tackling = _random.Next(minAttribute, maxAttribute);
                     break;
-
-                case Position.CentralMidfielder:
+                case "central midfielder":
                     player.Passing = _random.Next(minAttribute, maxAttribute);
                     player.Vision = _random.Next(minAttribute, maxAttribute);
                     player.Teamwork = _random.Next(minAttribute, maxAttribute);
                     player.WorkRate = _random.Next(minAttribute, maxAttribute);
                     player.Dribbling = _random.Next(minAttribute, maxAttribute);
                     break;
-
-                case Position.RightWinger:
-                case Position.LeftWinger:
+                case "right winger":
+                case "left winger":
                     player.Dribbling = _random.Next(minAttribute, maxAttribute);
                     player.Crossing = _random.Next(minAttribute, maxAttribute);
                     player.Speed = _random.Next(minAttribute, maxAttribute);
                     player.Finishing = _random.Next(minAttribute, maxAttribute);
                     player.Composure = _random.Next(minAttribute, maxAttribute);
                     break;
-
-                case Position.Striker:
+                case "striker":
                     player.Finishing = _random.Next(minAttribute, maxAttribute);
                     player.Dribbling = _random.Next(minAttribute, maxAttribute);
                     player.Shooting = _random.Next(minAttribute, maxAttribute);

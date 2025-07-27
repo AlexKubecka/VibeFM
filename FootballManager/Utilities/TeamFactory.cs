@@ -15,7 +15,12 @@ namespace FootballManager.Utilities
             Team team = new Team(name, "International", $"Stadium {name}", stadiumCapacity)
             {
                 Value = value,
-                Reputation = reputation
+                Reputation = reputation,
+                Wins = 0,
+                Draws = 0,
+                Losses = 0,
+                GoalsFor = 0,
+                GoalsAgainst = 0
             };
 
             // Add staff members directly to the StaffMembers collection

@@ -21,10 +21,25 @@ namespace FootballManager.Models
         // Value and Reputation Attributes
         public double Value { get; set; } // Team's monetary value
         public double Reputation { get; set; } // Team's reputation score
-        
+
+        // League
+        public string LeagueName { get; set; } // Name of the league the team belongs to (Temp FK)
+
+        // League Table Stats
+        public int Wins { get; set; }
+        public int Draws { get; set; }
+        public int Losses { get; set; }
+        public int GoalsFor { get; set; }
+        public int GoalsAgainst { get; set; }
+        public int GoalDifference => GoalsFor - GoalsAgainst;
+        public int Points => Wins * 3 + Draws;
+
         // Stadium Attributes
         public int StadiumCapacity { get; set; } // Capacity of the team's stadium
         public string StadiumName { get; set; } // Name of the team's stadium
+
+        // Parameterless constructor for EF and seeding
+        public Team() { }
 
         // Constructor
         public Team(string name, string nationality, string stadiumName, int stadiumCapacity)

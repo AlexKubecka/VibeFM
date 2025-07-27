@@ -1,0 +1,27 @@
+@model IEnumerable<FootballManager.Models.League>
+
+@{
+    ViewData["Title"] = "Leagues";
+}
+
+<h1>Leagues</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Nation</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var league in Model)
+{
+    <tr>
+        <td>
+            <a asp-action="Details" asp-route-id="@league.Id">@league.Name</a>
+        </td>
+        <td>@league.Nation</td>
+    </tr>
+}
+    </tbody>
+</table>

@@ -10,3 +10,12 @@
     <li><a asp-controller="Players" asp-action="Index">Players</a></li>
     <li><a asp-controller="StaffMembers" asp-action="Index">Staff Members</a></li>
 </ul>
+
+<form asp-action="SeedDatabase" method="post">
+    <button type="submit" class="btn btn-primary">Seed Database from JSON</button>
+</form>
+
+@if (TempData["SeedResult"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["SeedResult"]</div>
+}

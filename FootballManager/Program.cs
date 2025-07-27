@@ -16,11 +16,13 @@ namespace FootballManager
     {
         static async Task Main(string[] args)
         {
-            // Enable debug mode
-            Logger.DebugMode = false;
-            var teamsAndPlayers = await TransfermarktScraper.GetPremierLeagueTeamsAndPlayersAsync();
-            TransfermarktScraper.SaveTeamsAndPlayersToJson(teamsAndPlayers, "Data/teams_and_players.json");
-
+            using (var dbContext = new FootballManagerDbContext())
+            {
+                ClearDatabase(dbContext);
+                Console.WriteLine("Seeding database from combined_team_data.json...");
+                JsonDbSeeder.SeedFromCombinedTeamData(dbContext, @"Data/combined_team_data.json");
+                Console.WriteLine("Database seeding complete.");
+            }
             return;
             
             using (var dbContext = new FootballManagerDbContext())
@@ -44,10 +46,10 @@ namespace FootballManager
                 if (!dbContext.Players.Any())
                 {
                     dbContext.Players.AddRange(
-                        new Player { Name = "John Doe", Age = 25, Position = Position.Striker, Nationality = "English", TeamId = 1 },
-                        new Player { Name = "Michael Smith", Age = 22, Position = Position.Goalkeeper, Nationality = "English", TeamId = 1 },
-                        new Player { Name = "David Brown", Age = 28, Position = Position.CentralMidfielder, Nationality = "English", TeamId = 2 },
-                        new Player { Name = "FREE AGENT", Age = 88, Position = Position.CentralMidfielder, Nationality = "English"}
+                        new Player { Name = "John Doe", Age = 25, Position = "Striker", Nationality = "English", TeamId = 1 },
+                        new Player { Name = "Michael Smith", Age = 22, Position = "Goalkeeper", Nationality = "English", TeamId = 1 },
+                        new Player { Name = "David Brown", Age = 28, Position = "Central Midfielder", Nationality = "English", TeamId = 2 },
+                        new Player { Name = "FREE AGENT", Age = 88, Position = "Central Midfielder", Nationality = "English"}
                     );
                     dbContext.SaveChanges();
                     Console.WriteLine("Players added.");

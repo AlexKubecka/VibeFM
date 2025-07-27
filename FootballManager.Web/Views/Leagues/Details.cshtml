@@ -1,0 +1,82 @@
+@model FootballManager.Models.League
+
+@{
+    ViewData["Title"] = Model.Name + " - Details";
+}
+
+<h1>@Model.Name</h1>
+
+
+<h2>League Table</h2>
+@{
+    var leagueTable = Model.Teams
+        .Select(t => new {
+            Team = t,
+            t.Wins,
+            t.Draws,
+            t.Losses,
+            t.GoalsFor,
+            t.GoalsAgainst,
+            GoalDifference = t.GoalDifference,
+            Points = t.Points
+        })
+        .OrderByDescending(x => x.Points)
+        .ThenByDescending(x => x.GoalDifference)
+        .ThenByDescending(x => x.GoalsFor)
+        .ThenBy(x => x.Team.Name)
+        .ToList();
+}
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Position</th>
+            <th>Name</th>
+            <th>Wins</th>
+            <th>Draws</th>
+            <th>Losses</th>
+            <th>Goal Difference</th>
+            <th>Goals For</th>
+            <th>Goals Against</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+@for (int i = 0; i < leagueTable.Count; i++)
+{
+    var row = leagueTable[i];
+    <tr>
+        <td>@(i + 1)</td>
+        <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@row.Team.Id">@row.Team.Name</a></td>
+        <td>@row.Wins</td>
+        <td>@row.Draws</td>
+        <td>@row.Losses</td>
+        <td>@row.GoalDifference</td>
+        <td>@row.GoalsFor</td>
+        <td>@row.GoalsAgainst</td>
+        <td>@row.Points</td>
+    </tr>
+}
+    </tbody>
+</table>
+
+<h2>Most Valuable Players</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Market Value (M€)</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var player in Model.Teams.SelectMany(t => t.Players).OrderByDescending(p => p.MarketValue).Take(10))
+{
+    var team = Model.Teams.FirstOrDefault(t => t.Id == player.TeamId);
+    <tr>
+        <td><a asp-controller="Players" asp-action="Details" asp-route-id="@player.Id">@player.Name</a></td>
+        <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@player.TeamId">@(team != null ? team.Name : "Unknown")</a></td>
+        <td>@player.MarketValue</td>
+    </tr>
+}
+    </tbody>
+</table>

@@ -12,9 +12,11 @@ namespace FootballManager.Models
         // Basic Attributes
         public string Name { get; set; } = string.Empty;
         public int Age { get; set; }
-        public Position Position { get; set; }
+        public string Position { get; set; } = string.Empty;
         public string Nationality { get; set; } = string.Empty;
         public Team? Team { get; set; } // Reference to the team the player belongs to
+        // Market value in millions (from Transfermarkt)
+        public double MarketValue { get; set; }
 
         // Physical Attributes
         public double Height { get; set; } = 1.8; // Default height in meters
@@ -67,7 +69,7 @@ namespace FootballManager.Models
         public Player() { }
 
         // Constructor with only basic attributes required
-        public Player(string name, int age, Position position, string nationality, Team? team = null)
+        public Player(string name, int age, string position, string nationality, Team? team = null)
         {
             Name = name;
             Age = age;
@@ -79,57 +81,30 @@ namespace FootballManager.Models
         // Method to Get Formatted Info
         public string GetFormattedInfo()
         {
-            return $"{Name}, Position: {EnumHelper.GetDescription(Position)}, Overall Rating: {CalculateOverallRating()}";
+            return $"{Name}, Position: {Position}, Overall Rating: {CalculateOverallRating()}";
         }
 
         // Method to calculate Overall Rating based on Position
         public double CalculateOverallRating()
         {
             double overallRating = 0;
-
-            switch (Position)
-            {
-                case Position.Goalkeeper:
-                    // Goalkeeper-specific attributes
-                    overallRating = (Handling + Reflexes + AerialAbility + Communication + Throwing + OneOnOnes + JumpingReach) / 7.0;
-                    break;
-
-                case Position.RightBack:
-                case Position.LeftBack:
-                    // Full-back-specific attributes
-                    overallRating = (Marking + Tackling + Positioning + Strength + Speed + Crossing + Stamina) / 7.0;
-                    break;
-
-                case Position.CenterBack:
-                    // Center-back-specific attributes
-                    overallRating = (Marking + Tackling + Heading + Positioning + Strength + Concentration + Anticipation) / 7.0;
-                    break;
-
-                case Position.DefensiveMidfielder:
-                    // Defensive midfielder-specific attributes
-                    overallRating = (Passing + Vision + Teamwork + WorkRate + Tackling + Strength + DecisionMaking) / 7.0;
-                    break;
-
-                case Position.CentralMidfielder:
-                    // Central midfielder-specific attributes
-                    overallRating = (Passing + Vision + Teamwork + WorkRate + Stamina + DecisionMaking + Dribbling) / 7.0;
-                    break;
-
-                case Position.RightWinger:
-                case Position.LeftWinger:
-                    // Winger-specific attributes
-                    overallRating = (Dribbling + Crossing + Speed + Finishing + Composure + Vision + Positioning) / 7.0;
-                    break;
-
-                case Position.Striker:
-                    // Striker-specific attributes
-                    overallRating = (Finishing + Dribbling + Shooting + Heading + Composure + Anticipation + Positioning) / 7.0;
-                    break;
-
-                default:
-                    throw new ArgumentException("Unknown position");
-            }
-
+            string pos = Position.ToLowerInvariant();
+            if (pos == "goalkeeper")
+                overallRating = (Handling + Reflexes + AerialAbility + Communication + Throwing + OneOnOnes + JumpingReach) / 7.0;
+            else if (pos == "right back" || pos == "left back")
+                overallRating = (Marking + Tackling + Positioning + Strength + Speed + Crossing + Stamina) / 7.0;
+            else if (pos == "center back")
+                overallRating = (Marking + Tackling + Heading + Positioning + Strength + Concentration + Anticipation) / 7.0;
+            else if (pos == "defensive midfielder")
+                overallRating = (Passing + Vision + Teamwork + WorkRate + Tackling + Strength + DecisionMaking) / 7.0;
+            else if (pos == "central midfielder")
+                overallRating = (Passing + Vision + Teamwork + WorkRate + Stamina + DecisionMaking + Dribbling) / 7.0;
+            else if (pos == "right winger" || pos == "left winger")
+                overallRating = (Dribbling + Crossing + Speed + Finishing + Composure + Vision + Positioning) / 7.0;
+            else if (pos == "striker")
+                overallRating = (Finishing + Dribbling + Shooting + Heading + Composure + Anticipation + Positioning) / 7.0;
+            else
+                overallRating = 50; // Default fallback
             return Math.Round(overallRating, 2); // Round to 2 decimal places
         }
 
@@ -137,7 +112,7 @@ namespace FootballManager.Models
         public void LogPlayerInfo()
         {
             Logger.Log($"Player: {Name} ({Nationality})");
-            Logger.Log($"Age: {Age}, Position: {EnumHelper.GetDescription(Position)}");
+            Logger.Log($"Age: {Age}, Position: {Position}");
             Logger.Log($"Overall Rating: {CalculateOverallRating()}");
         }
 
@@ -145,7 +120,7 @@ namespace FootballManager.Models
         public void PrintPlayerInfo()
         {
             Console.WriteLine($"Player: {Name} ({Nationality})");
-            Console.WriteLine($"Age: {Age}, Position: {EnumHelper.GetDescription(Position)}");
+            Console.WriteLine($"Age: {Age}, Position: {Position}");
             Console.WriteLine($"Overall Rating: {CalculateOverallRating()}");
         }
 
@@ -157,11 +132,12 @@ namespace FootballManager.Models
         -------------------
         Name:           {Name}
         Age:            {Age}
-        Position:       {EnumHelper.GetDescription(Position)}
+        Position:       {Position}
         Nationality:    {Nationality}
         Team:           {(Team != null ? Team.Name : "No Team")}
         Height:         {Height} m
         Weight:         {Weight} kg
+        Market Value:  €{MarketValue} m
 
         Physical Attributes:
         --------------------
