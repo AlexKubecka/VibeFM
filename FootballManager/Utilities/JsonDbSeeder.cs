@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using FootballManager.Enums;
 using FootballManager.Data;
 using FootballManager.Models;
 
@@ -61,6 +62,15 @@ namespace FootballManager.Utilities
                 var teamName = kvp.Key;
                 var teamInfo = kvp.Value;
 
+                // Extract manager info if present (from TeamInfoCombined)
+                string managerName = null;
+                string managerStartDate = null;
+                if (teamInfo is TeamInfoCombined teamCombined && teamCombined.Manager != null)
+                {
+                    managerName = teamCombined.Manager.Name;
+                    managerStartDate = teamCombined.Manager.StartDate;
+                }
+
                 // Add team if not exists
                 var team = dbContext.Teams.FirstOrDefault(t => t.Name == teamName);
                 if (team == null)
@@ -82,6 +92,27 @@ namespace FootballManager.Utilities
                     dbContext.Teams.Add(team);
                     dbContext.SaveChanges();
                 }
+                // Add or update manager as StaffMember
+                if (!string.IsNullOrWhiteSpace(managerName))
+                {
+                    // Remove any existing manager for this team
+                    var existingManagers = dbContext.StaffMembers.Where(s => s.TeamId == team.Id && s.Job == FootballManager.Enums.Job.Manager).ToList();
+                    if (existingManagers.Any())
+                    {
+                        dbContext.StaffMembers.RemoveRange(existingManagers);
+                        dbContext.SaveChanges();
+                    }
+                    DateTime? parsedStartDate = null;
+                    if (!string.IsNullOrWhiteSpace(managerStartDate) && DateTime.TryParse(managerStartDate, out var dt))
+                        parsedStartDate = dt;
+                    var manager = new StaffMember(managerName, FootballManager.Enums.Job.Manager)
+                    {
+                        TeamId = team.Id,
+                        StartDate = parsedStartDate
+                    };
+                    dbContext.StaffMembers.Add(manager);
+                    dbContext.SaveChanges();
+                }
 
                 // Add players
                 if (teamInfo.Players != null)
@@ -97,7 +128,8 @@ namespace FootballManager.Utilities
                                 Nationality = p.Nationality,
                                 TeamId = team.Id,
                                 MarketValue = ParseMarketValue(p.MarketValue),
-                                Position = GetPositionDescription(ParsePosition(p.Position))
+                                Position = GetPositionDescription(ParsePosition(p.Position)),
+                                Morale = 0.5 // Default morale
                             });
                         }
                     }
@@ -138,16 +170,41 @@ namespace FootballManager.Utilities
         public static FootballManager.Enums.Position ParsePosition(string pos)
         {
             if (string.IsNullOrWhiteSpace(pos)) return FootballManager.Enums.Position.CentralMidfielder;
-            pos = pos.ToLower();
-            if (pos.Contains("goalkeeper")) return FootballManager.Enums.Position.Goalkeeper;
-            if (pos.Contains("right back")) return FootballManager.Enums.Position.RightBack;
-            if (pos.Contains("left back")) return FootballManager.Enums.Position.LeftBack;
-            if (pos.Contains("center back") || pos.Contains("centre-back") || pos.Contains("centre back")) return FootballManager.Enums.Position.CenterBack;
-            if (pos.Contains("defensive")) return FootballManager.Enums.Position.DefensiveMidfielder;
-            if (pos.Contains("midfield")) return FootballManager.Enums.Position.CentralMidfielder;
-            if (pos.Contains("right winger")) return FootballManager.Enums.Position.RightWinger;
-            if (pos.Contains("left winger")) return FootballManager.Enums.Position.LeftWinger;
-            if (pos.Contains("striker") || pos.Contains("forward")) return FootballManager.Enums.Position.Striker;
+            var normalized = pos.Trim().ToLower().Replace("-", " ").Replace("_", " ");
+            // Strict, normalized matching
+            switch (normalized)
+            {
+                case "goalkeeper":
+                    return FootballManager.Enums.Position.Goalkeeper;
+                case "right back":
+                    return FootballManager.Enums.Position.RightBack;
+                case "center back":
+                case "centre back":
+                    return FootballManager.Enums.Position.CenterBack;
+                case "left back":
+                    return FootballManager.Enums.Position.LeftBack;
+                case "defensive midfielder":
+                    return FootballManager.Enums.Position.DefensiveMidfielder;
+                case "central midfielder":
+                    return FootballManager.Enums.Position.CentralMidfielder;
+                case "right winger":
+                    return FootballManager.Enums.Position.RightWinger;
+                case "left winger":
+                    return FootballManager.Enums.Position.LeftWinger;
+                case "striker":
+                case "forward":
+                    return FootballManager.Enums.Position.Striker;
+            }
+            // Fallback: substring matching for rare/unknown cases
+            if (normalized.Contains("goalkeeper")) return FootballManager.Enums.Position.Goalkeeper;
+            if (normalized.Contains("right back")) return FootballManager.Enums.Position.RightBack;
+            if (normalized.Contains("left back")) return FootballManager.Enums.Position.LeftBack;
+            if (normalized.Contains("center back") || normalized.Contains("centre back")) return FootballManager.Enums.Position.CenterBack;
+            if (normalized.Contains("defensive")) return FootballManager.Enums.Position.DefensiveMidfielder;
+            if (normalized.Contains("midfield")) return FootballManager.Enums.Position.CentralMidfielder;
+            if (normalized.Contains("right winger")) return FootballManager.Enums.Position.RightWinger;
+            if (normalized.Contains("left winger")) return FootballManager.Enums.Position.LeftWinger;
+            if (normalized.Contains("striker") || normalized.Contains("forward")) return FootballManager.Enums.Position.Striker;
             return FootballManager.Enums.Position.CentralMidfielder;
         }
 
@@ -171,6 +228,13 @@ namespace FootballManager.Utilities
             public int StadiumCapacity { get; set; }
             public string TotalMarketValue { get; set; }
             public List<PlayerInfo> Players { get; set; }
+            public ManagerInfo Manager { get; set; } // Add this property
+        }
+
+        public class ManagerInfo
+        {
+            public string Name { get; set; }
+            public string StartDate { get; set; }
         }
     }
 }

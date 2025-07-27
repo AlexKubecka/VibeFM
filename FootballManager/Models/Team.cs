@@ -24,6 +24,39 @@ namespace FootballManager.Models
 
         // League
         public string LeagueName { get; set; } // Name of the league the team belongs to (Temp FK)
+        
+        // Recent Results
+        // Store last N match results (e.g., 'W', 'D', 'L') and performance ratings (0-10)
+        public List<char> RecentResults { get; set; } = new List<char>(); // e.g., ['W','D','L','W','W']
+
+        // Squad Morale (average of all player morales)
+        public double SquadMorale => Players.Count > 0 ? Players.Average(p => p.Morale) : 0.5;
+
+        public string GetSquadMoraleDescription()
+        {
+            double morale = SquadMorale;
+            if (morale <= 0.15) return "Awful";
+            if (morale <= 0.3) return "Very Bad";
+            if (morale <= 0.45) return "Bad";
+            if (morale <= 0.6) return "Neutral";
+            if (morale <= 0.75) return "Good";
+            if (morale <= 0.9) return "Very Good";
+            return "Excellent";
+        }
+
+        // Helper to get recent results as a qualitative form description (e.g., "Awful", "Bad", "Neutral", "Good", "Perfect")
+        public string GetFormDescription()
+        {
+            if (RecentResults == null || RecentResults.Count == 0) return "No recent results";
+            int total = RecentResults.Count;
+            int wins = RecentResults.Count(r => r == 'W');
+            double winRate = (double)wins / total;
+            if (winRate == 1.0) return "Perfect";
+            if (winRate >= 0.75) return "Good";
+            if (winRate >= 0.4) return "Neutral";
+            if (winRate >= 0.2) return "Bad";
+            return "Awful";
+        }
 
         // League Table Stats
         public int Wins { get; set; }

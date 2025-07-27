@@ -15,7 +15,9 @@ namespace FootballManager.Models
         public string Position { get; set; } = string.Empty;
         public string Nationality { get; set; } = string.Empty;
         public Team? Team { get; set; } // Reference to the team the player belongs to
-        // Market value in millions (from Transfermarkt)
+        
+        // Dynamic Attributes
+        public double Morale { get; set; } = 0.5; // 0.0 (very low) to 1.0 (very high)
         public double MarketValue { get; set; }
 
         // Physical Attributes
@@ -82,6 +84,18 @@ namespace FootballManager.Models
         public string GetFormattedInfo()
         {
             return $"{Name}, Position: {Position}, Overall Rating: {CalculateOverallRating()}";
+        }
+
+        // Helper to get morale as a string description
+        public string GetMoraleDescription()
+        {
+            if (Morale <= 0.15) return "Awful";
+            if (Morale <= 0.3) return "Very Bad";
+            if (Morale <= 0.45) return "Bad";
+            if (Morale <= 0.6) return "Neutral";
+            if (Morale <= 0.75) return "Good";
+            if (Morale <= 0.9) return "Very Good";
+            return "Excellent";
         }
 
         // Method to calculate Overall Rating based on Position

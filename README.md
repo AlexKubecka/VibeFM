@@ -1,49 +1,66 @@
 # Football Manager Simulation
 
 ## Overview
-This project simulates a football league with teams, players, and staff members. It dynamically generates teams, assigns players and staff, calculates ratings, and ranks teams based on their overall performance.
+This project simulates real-world football leagues, teams, and players using a modern ASP.NET Core MVC web application with a SQLite database backend. You can view league tables, team and player details, and simulate an entire season with a single click.
 
 ---
 
 ## Features
-- Dynamic team creation with unique attributes like reputation, stadium size, and value.
-- Position-based player attributes for realistic simulations.
-- Job-based staff attributes for managers and coaches.
-- League rankings based on calculated overall ratings.
-- Debug mode for detailed logging.
-- Unit tests to ensure code correctness.
-
----
-
-## TODO List
-
-### Core Features
-- [x] Implement `Team` class with attributes like `Value`, `Reputation`, and `Stadium`.
-- [x] Implement `Player` class with position-specific attributes.
-- [x] Implement `League` class to manage teams and simulate matches.
-- [x] Add factories (`TeamFactory`, `PlayerFactory`, `LeagueFactory`) for dynamic entity creation.
-
-### Enhancements
-- [ ] Add match simulation logic to calculate points and generate league standings.
-- [ ] Implement player transfers between teams.
-- [ ] Add injury and morale attributes for players.
-- [ ] Expand staff roles (e.g., Fitness Coach, Scout).
-- [ ] Add team tactics and formations to influence match outcomes.
-
-### Testing
-- [x] Write unit tests for `Player` class (e.g., `CalculateOverallRating`, `ToString`).
-- [x] Write unit tests for `Team` class (e.g., `AddPlayer`, `RemovePlayer`).
-- [ ] Write unit tests for `League` class (e.g., `SimulateLeague`, `PrintLeagueTable`).
-- [ ] Add integration tests for factories (`TeamFactory`, `PlayerFactory`, `LeagueFactory`).
-
-### Documentation
-- [x] Add a README file with project overview and features.
-- [ ] Add detailed comments to all methods and classes.
-- [ ] Create a user guide for running the simulation and interpreting results.
+- ASP.NET Core MVC web UI for browsing leagues, teams, and players
+- Real football data seeded from JSON (teams, players, staff, market values, stadiums)
+- League table with live stats (Wins, Draws, Losses, Goals For/Against, Points, etc.)
+- Simulate a full season for any league with one click
+- Most valuable players leaderboard
+- Entity Framework Core with SQLite database
+- Debug mode for detailed logging
+- Unit tests for core logic
 
 ---
 
 ## How to Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/football-manager.git
+   git clone https://github.com/yourusername/VibeFM.git
+   cd VibeFM
+   ```
+2. Build and run the web application:
+   ```bash
+   dotnet build FootballManager.Web/FootballManager.Web.csproj
+   dotnet run --project FootballManager.Web/FootballManager.Web.csproj
+   ```
+3. Open your browser and go to `https://localhost:5001` (or the URL shown in the console).
+
+---
+
+## Usage
+- The database is seeded with real football data on startup.
+- Navigate to the "Leagues" tab to view all leagues and their tables.
+- Click on a league to see the league table and most valuable players.
+- Click the "Simulate Season" button to randomly simulate all matches in the league and update the table.
+- Click on any team or player for detailed stats.
+
+---
+
+## TODO List
+
+### Core Features
+- [x] Web UI for leagues, teams, and players
+- [x] League table with real stats and simulation
+- [x] Database seeding from real data
+- [x] Player and staff factories
+
+### Enhancements
+- [ ] Player transfers between teams
+- [ ] Injuries and morale
+- [ ] Expand staff roles (e.g., Fitness Coach, Scout)
+- [ ] Team tactics and formations
+
+### Testing
+- [x] Unit tests for Player and Team
+- [ ] Unit tests for League simulation
+- [ ] Integration tests for factories
+
+### Documentation
+- [x] README with project overview and features
+- [ ] Add detailed comments to all methods and classes
+- [ ] Create a user guide for running the simulation and interpreting results

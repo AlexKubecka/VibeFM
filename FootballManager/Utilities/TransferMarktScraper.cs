@@ -82,6 +82,14 @@ public static class TransfermarktScraper
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 
+        // Manager info
+        string manager = null;
+        var managerNode = doc.DocumentNode.SelectSingleNode("//a[contains(@href, '/profil/trainer/') and contains(@class, 'name')]");
+        if (managerNode != null)
+        {
+            manager = managerNode.InnerText.Trim();
+        }
+        
         // Stadium info
         string stadiumName = "Unknown";
         int stadiumCapacity = 0;
@@ -147,7 +155,8 @@ public static class TransfermarktScraper
         {
             StadiumName = stadiumName,
             StadiumCapacity = stadiumCapacity,
-            Players = players
+            Players = players,
+            Manager = manager
         };
     }
 
@@ -210,6 +219,7 @@ public static class TransfermarktScraper
         public int StadiumCapacity { get; set; }
         public string TotalMarketValue { get; set; } // New: team total market value
         public List<PlayerInfo> Players { get; set; }
+        public string Manager { get; set; } // New: manager name
     }
 
     // Helper class for player info

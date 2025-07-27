@@ -72,6 +72,66 @@ namespace FootballManager.Web.Controllers
         }
 
         [HttpPost]
+        public IActionResult SimulateMatchweek(int leagueId)
+        {
+            // Get league name by id (index in list)
+            var leagueNames = _dbContext.Teams
+                .Select(t => t.LeagueName)
+                .Distinct()
+                .Where(n => !string.IsNullOrEmpty(n))
+                .ToList();
+            if (leagueId < 1 || leagueId > leagueNames.Count)
+                return NotFound();
+            var leagueName = leagueNames[leagueId - 1];
+
+            // Get all teams in this league
+            var teams = _dbContext.Teams.Where(t => t.LeagueName == leagueName).ToList();
+            var rand = new Random();
+
+            // Shuffle teams for random pairings
+            var shuffled = teams.OrderBy(_ => rand.Next()).ToList();
+            for (int i = 0; i < shuffled.Count - 1; i += 2)
+            {
+                var home = shuffled[i];
+                var away = shuffled[i + 1];
+                int homeGoals = rand.Next(0, 5);
+                int awayGoals = rand.Next(0, 5);
+                home.GoalsFor += homeGoals;
+                home.GoalsAgainst += awayGoals;
+                away.GoalsFor += awayGoals;
+                away.GoalsAgainst += homeGoals;
+                if (homeGoals > awayGoals)
+                {
+                    home.Wins++;
+                    away.Losses++;
+                    home.RecentResults.Insert(0, 'W');
+                    away.RecentResults.Insert(0, 'L');
+                }
+                else if (homeGoals < awayGoals)
+                {
+                    away.Wins++;
+                    home.Losses++;
+                    home.RecentResults.Insert(0, 'L');
+                    away.RecentResults.Insert(0, 'W');
+                }
+                else
+                {
+                    home.Draws++;
+                    away.Draws++;
+                    home.RecentResults.Insert(0, 'D');
+                    away.RecentResults.Insert(0, 'D');
+                }
+                // Limit to last 5 results
+                if (home.RecentResults.Count > 5) home.RecentResults.RemoveAt(5);
+                if (away.RecentResults.Count > 5) away.RecentResults.RemoveAt(5);
+            }
+            // If odd number of teams, last team gets a bye (no match)
+
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details", new { id = leagueId });
+        }
+        
+        [HttpPost]
         public IActionResult SimulateSeason(int leagueId)
         {
             // Get league name by id (index in list)

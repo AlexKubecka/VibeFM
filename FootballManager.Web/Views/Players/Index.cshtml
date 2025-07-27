@@ -15,6 +15,7 @@
             <th>Nationality</th>
             <th>Team</th>
             <th>Market Value (M€)</th>
+            <th>Morale</th>
             <th></th>
         </tr>
     </thead>
@@ -37,6 +38,7 @@
         }
         </td>
         <td>@player.MarketValue</td>
+        <td>@player.GetMoraleDescription()</td>
     </tr>
 }
     </tbody>

@@ -12,6 +12,7 @@
             <th>Name</th>
             <th>Job</th>
             <th>Team</th>
+            <th>Start Date</th>
             <th></th>
         </tr>
     </thead>
@@ -29,6 +30,12 @@
             else
             {
                 <span>Free Agent</span>
+            }
+        </td>
+        <td>
+            @if (staff.StartDate != null)
+            {
+                @staff.StartDate.Value.ToString("yyyy-MM-dd")
             }
         </td>
         <td>

@@ -16,6 +16,9 @@
             <th>Stadium Capacity</th>
             <th>Value</th>
             <th>Reputation</th>
+            <th>Squad Morale</th>
+        <th>Recent Results</th>
+        <th>Form</th>
             <th></th>
         </tr>
     </thead>
@@ -30,6 +33,9 @@
         <td>@team.StadiumCapacity</td>
         <td>@team.Value</td>
         <td>@team.Reputation</td>
+        <td>@team.GetSquadMoraleDescription()</td>
+        <td>@string.Join(" ", team.RecentResults)</td>
+        <td>@team.GetFormDescription()</td>
     </tr>
 }
     </tbody>

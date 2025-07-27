@@ -8,57 +8,211 @@
 <hr />
 <dl class="row">
 
-    <dt class="col-sm-2">League</dt>
-    <dd class="col-sm-10">@Model.LeagueName</dd>
 
-    <dt class="col-sm-2">Nationality</dt>
-    <dd class="col-sm-10">@Model.Nationality</dd>
 
-    <dt class="col-sm-2">Stadium Name</dt>
-    <dd class="col-sm-10">@Model.StadiumName</dd>
+<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 32px; margin-bottom: 32px;">
+    <!-- Left: Team Info -->
+    <div style="flex: 1.2; min-width: 260px;">
+        <dl class="row">
+            <dt class="col-sm-4">League</dt>
+            <dd class="col-sm-8">@Model.LeagueName</dd>
+            <dt class="col-sm-4">Nationality</dt>
+            <dd class="col-sm-8">@Model.Nationality</dd>
+            <dt class="col-sm-4">Stadium Name</dt>
+            <dd class="col-sm-8">@Model.StadiumName</dd>
+            <dt class="col-sm-4">Stadium Capacity</dt>
+            <dd class="col-sm-8">@Model.StadiumCapacity</dd>
+            <dt class="col-sm-4">Value</dt>
+            <dd class="col-sm-8">@Model.Value</dd>
+            <dt class="col-sm-4">Reputation</dt>
+            <dd class="col-sm-8">@Model.Reputation</dd>
+            <dt class="col-sm-4">Squad Morale</dt>
+            <dd class="col-sm-8">@Model.GetSquadMoraleDescription()</dd>
+        </dl>
+        <h3>Recent Results</h3>
+        <p>@string.Join(" ", Model.RecentResults)</p>
+        <h4>Form</h4>
+        <p>@Model.GetFormDescription()</p>
 
-    <dt class="col-sm-2">Stadium Capacity</dt>
-    <dd class="col-sm-10">@Model.StadiumCapacity</dd>
+        <h3>Staff Members</h3>
+        @if (Model.StaffMembers != null && Model.StaffMembers.Any())
+        {
+            <ul>
+            @foreach (var staff in Model.StaffMembers)
+            {
+                <li>
+                    <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@staff.Id">
+                        @if (staff.Job.ToString() == "Manager") {
+                            <strong>@staff.Name</strong> <span class="badge bg-primary">Manager</span>
+                            @if (staff.StartDate != null) { <span>(@staff.StartDate.Value.ToString("yyyy-MM-dd"))</span> }
+                        } else {
+                            @staff.Name
+                        }
+                    </a>
+                </li>
+            }
+            </ul>
+        }
+        else
+        {
+            <p>No staff members assigned.</p>
+        }
+    </div>
+    <!-- Center: Manager + Formation -->
+    <div style="flex: 2; min-width: 400px;">
+        @{
+            var manager = Model.StaffMembers?.FirstOrDefault(s => s.Job.ToString() == "Manager");
+        }
+        @if (manager != null)
+        {
+            <div class="card mb-3" style="background: #e9ecef; border: 1px solid #bfc9d1;">
+                <div class="card-body">
+                    <h5 class="card-title">Manager</h5>
+                    <p class="card-text">
+                        <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@manager.Id">
+                            <strong>@manager.Name</strong>
+                        </a>
+                        <br />
+                        <span class="text-muted">@manager.StartDate?.ToString("yyyy-MM-dd")</span>
+                    </p>
+                </div>
+            </div>
+        }
+        <h3 style="text-align:center;">Formation (Most Valuable XI)</h3>
+        @{
+            // 4-3-3 formation, inverted, visually centered, RW top right, RB lower right
+            var positions = new[] {
+                "Left Winger", "Striker", "Right Winger",
+                "Central Midfielder", "Central Midfielder", "Central Midfielder",
+                "Left Back", "Center Back", "Center Back", "Right Back",
+                "Goalkeeper"
+            };
+            var selectedPlayers = new List<FootballManager.Models.Player>();
+            var usedPlayerIds = new HashSet<int>();
+            foreach (var pos in positions)
+            {
+                var best = Model.Players
+                    .Where(p => p.Position != null && p.Position.ToLower().Contains(pos.ToLower()) && !usedPlayerIds.Contains(p.Id))
+                    .OrderByDescending(p => p.MarketValue)
+                    .FirstOrDefault();
+                if (best != null)
+                {
+                    selectedPlayers.Add(best);
+                    usedPlayerIds.Add(best.Id);
+                }
+                else
+                {
+                    selectedPlayers.Add(null);
+                }
+            }
+        }
+        <table class="table table-bordered text-center formation-table" style="width:100%; background: #f8f9fa; margin:auto;">
+            <tr>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[0] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[0].Id">@selectedPlayers[0].Name</a><br />
+                        <small>@selectedPlayers[0].Position</small>
+                    } else { <span>LW</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[1] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[1].Id">@selectedPlayers[1].Name</a><br />
+                        <small>@selectedPlayers[1].Position</small>
+                    } else { <span>ST</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[2] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[2].Id">@selectedPlayers[2].Name</a><br />
+                        <small>@selectedPlayers[2].Position</small>
+                    } else { <span>RW</span> }
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[3] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[3].Id">@selectedPlayers[3].Name</a><br />
+                        <small>@selectedPlayers[3].Position</small>
+                    } else { <span>CM</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[4] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[4].Id">@selectedPlayers[4].Name</a><br />
+                        <small>@selectedPlayers[4].Position</small>
+                    } else { <span>CM</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[5] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[5].Id">@selectedPlayers[5].Name</a><br />
+                        <small>@selectedPlayers[5].Position</small>
+                    } else { <span>CM</span> }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (selectedPlayers[6] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[6].Id">@selectedPlayers[6].Name</a><br />
+                        <small>@selectedPlayers[6].Position</small>
+                    } else { <span>LB</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[7] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[7].Id">@selectedPlayers[7].Name</a><br />
+                        <small>@selectedPlayers[7].Position</small>
+                    } else { <span>CB</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[8] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[8].Id">@selectedPlayers[8].Name</a><br />
+                        <small>@selectedPlayers[8].Position</small>
+                    } else { <span>CB</span> }
+                </td>
+                <td></td>
+                <td>
+                    @if (selectedPlayers[9] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[9].Id">@selectedPlayers[9].Name</a><br />
+                        <small>@selectedPlayers[9].Position</small>
+                    } else { <span>RB</span> }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>
+                    @if (selectedPlayers[10] != null) {
+                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[10].Id">@selectedPlayers[10].Name</a><br />
+                        <small>@selectedPlayers[10].Position</small>
+                    } else { <span>GK</span> }
+                </td>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+    </div>
+    <!-- Right: Players -->
+    <div style="flex: 0.6; min-width: 140px;">
+        <h3>Players</h3>
+        @if (Model.Players != null && Model.Players.Any())
+        {
+            <ul>
+            @foreach (var player in Model.Players)
+            {
+                <li>
+                    <a asp-controller="Players" asp-action="Details" asp-route-id="@player.Id">@player.Name</a>
+                </li>
+            }
+            </ul>
+        }
+        else
+        {
+            <p>No players assigned.</p>
+        }
+    </div>
+</div>
 
-    <dt class="col-sm-2">Value</dt>
-    <dd class="col-sm-10">@Model.Value</dd>
-
-    <dt class="col-sm-2">Reputation</dt>
-    <dd class="col-sm-10">@Model.Reputation</dd>
-</dl>
-
-<h3>Players</h3>
-@if (Model.Players != null && Model.Players.Any())
-{
-    <ul>
-    @foreach (var player in Model.Players)
-    {
-        <li>
-            <a asp-controller="Players" asp-action="Details" asp-route-id="@player.Id">@player.Name</a>
-        </li>
-    }
-    </ul>
-}
-else
-{
-    <p>No players assigned.</p>
-}
-
-<h3>Staff Members</h3>
-@if (Model.StaffMembers != null && Model.StaffMembers.Any())
-{
-    <ul>
-    @foreach (var staff in Model.StaffMembers)
-    {
-        <li>
-            <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@staff.Id">@staff.Name</a>
-        </li>
-    }
-    </ul>
-}
-else
-{
-    <p>No staff members assigned.</p>
-}
-
-<a asp-action="Index">Back to List</a>

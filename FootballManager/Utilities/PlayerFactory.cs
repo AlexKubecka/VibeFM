@@ -15,6 +15,7 @@ namespace FootballManager.Utilities
             int maxAttribute = (int)Math.Min(100, teamValue / 10 + 50); // Maximum attribute value
 
             Player player = new Player(name, _random.Next(18, 35), position, "International");
+            player.Morale = 0.5; // Default morale
 
             string pos = position.ToLowerInvariant();
             switch (pos)

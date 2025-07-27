@@ -51,6 +51,7 @@ namespace FootballManager.Models
         public Team? Team { get; set; } // Navigation property
         public string Name { get; set; }
         public Job Job { get; set; }
+        public DateTime? StartDate { get; set; } // Date the staff member started (nullable)
         public double TacticalKnowledge { get; set; }
         public double Leadership { get; set; }
         public double DecisionMaking { get; set; }

@@ -8,7 +8,11 @@
 
 
 <h2>League Table</h2>
-<form asp-action="SimulateSeason" asp-controller="Leagues" method="post" style="margin-bottom: 1em;">
+<form asp-action="SimulateMatchweek" asp-controller="Leagues" method="post" style="margin-bottom: 1em; display:inline-block;">
+    <input type="hidden" name="leagueId" value="@Model.Id" />
+    <button type="submit" class="btn btn-success">Simulate Matchweek</button>
+</form>
+<form asp-action="SimulateSeason" asp-controller="Leagues" method="post" style="margin-bottom: 1em; display:inline-block; margin-left:10px;">
     <input type="hidden" name="leagueId" value="@Model.Id" />
     <button type="submit" class="btn btn-primary">Simulate Season</button>
 </form>

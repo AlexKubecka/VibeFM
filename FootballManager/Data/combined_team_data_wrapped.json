@@ -281,7 +281,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Pep Guardiola",
+        "StartDate": "1 Jul 2016"
+      }
     },
     "Arsenal FC": {
       "StadiumName": "Emirates Stadium",
@@ -514,7 +518,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Mikel Arteta",
+        "StartDate": "22 Dec 2019"
+      }
     },
     "Chelsea FC": {
       "StadiumName": "Stamford Bridge",
@@ -867,7 +875,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Enzo Maresca",
+        "StartDate": "3 June 2024"
+      }
     },
     "Liverpool FC": {
       "StadiumName": "Anfield",
@@ -1116,7 +1128,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Arne Slot",
+        "StartDate": "1 Jun 2024"
+      }
     },
     "Tottenham Hotspur": {
       "StadiumName": "Tottenham Hotspur Stadium",
@@ -1389,7 +1405,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Thomas Frank",
+        "StartDate": "12 Jun 2025"
+      }
     },
     "Manchester United": {
       "StadiumName": "Old Trafford",
@@ -1654,7 +1674,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Ruben Amorim",
+        "StartDate": "11 Nov 2024"
+      }
     },
     "Newcastle United": {
       "StadiumName": "St James' Park",
@@ -1895,7 +1919,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Eddie Howe",
+        "StartDate": "8 Nov 2021"
+      }
     },
     "Brighton &amp; Hove Albion": {
       "StadiumName": "AMEX Stadium",
@@ -2417,7 +2445,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Unai Emery",
+        "StartDate": "5 Nov 2022"
+      }
     },
     "Crystal Palace": {
       "StadiumName": "Selhurst Park",
@@ -2666,7 +2698,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Oliver Glasner",
+        "StartDate": "20 Feb 2024"
+      }
     },
     "AFC Bournemouth": {
       "StadiumName": "Vitality Stadium",
@@ -2907,7 +2943,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Andoni Iraola",
+        "StartDate": "1 Jul 2023"
+      }
     },
     "Nottingham Forest": {
       "StadiumName": "The City Ground",
@@ -3124,7 +3164,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Nuno Espirito Santo",
+        "StartDate": "20 Dec 2023"
+      }
     },
     "Brentford FC": {
       "StadiumName": "Gtech Community Stadium",
@@ -3397,7 +3441,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Keith Andrews",
+        "StartDate": "27 Jun 2025"
+      }
     },
     "West Ham United": {
       "StadiumName": "London Stadium",
@@ -3630,7 +3678,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Graham Potter",
+        "StartDate": "9 Jan 2025"
+      }
     },
     "Fulham FC": {
       "StadiumName": "Craven Cottage",
@@ -3823,7 +3875,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Marco Silva",
+        "StartDate": "1 Jul 2021"
+      }
     },
     "Wolverhampton Wanderers": {
       "StadiumName": "Molineux Stadium",
@@ -4048,7 +4104,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Vitor Pereira",
+        "StartDate": "19 Dec 2024"
+      }
     },
     "Everton FC": {
       "StadiumName": "Goodison Park",
@@ -4217,7 +4277,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "David Moyes",
+        "StartDate": "11 Jan 2025"
+      }
     },
     "Leeds United": {
       "StadiumName": "Elland Road",
@@ -4466,7 +4530,11 @@
         }
       ],
       "LeagueName": "Premier League",
-      "LeagueNation": "England"
+      "LeagueNation": "England",
+      "Manager": {
+        "Name": "Daniel Farke",
+        "StartDate": "4 Jul 2023"
+      }
     },
     "Burnley FC": {
       "StadiumName": "Turf Moor",
