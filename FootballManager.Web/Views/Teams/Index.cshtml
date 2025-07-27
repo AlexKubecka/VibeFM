@@ -4,9 +4,10 @@
     ViewData["Title"] = "Teams";
 }
 
+<div class="minimal-card">
 <h1>Teams</h1>
 
-<table class="table">
+<table class="minimal-table">
     <thead>
         <tr>
             <th>Name</th>
@@ -23,11 +24,29 @@
         </tr>
     </thead>
     <tbody>
+@{
+    // Build league name to index map for correct league id links
+    var leagueNames = Model.Select(t => t.LeagueName).Distinct().Where(n => !string.IsNullOrEmpty(n)).ToList();
+    var leagueNameToId = new Dictionary<string, int>();
+    for (int i = 0; i < leagueNames.Count; i++)
+    {
+        leagueNameToId[leagueNames[i]] = i + 1;
+    }
+}
 @foreach (var team in Model)
 {
     <tr>
         <td><a asp-action="Details" asp-route-id="@team.Id">@team.Name</a></td>
-        <td><a asp-controller="Leagues" asp-action="Details" asp-route-id="@team.LeagueName">@team.LeagueName</a></td>
+        <td>
+            @if (!string.IsNullOrEmpty(team.LeagueName) && leagueNameToId.ContainsKey(team.LeagueName))
+            {
+                <a asp-controller="Leagues" asp-action="Details" asp-route-id="@leagueNameToId[team.LeagueName]">@team.LeagueName</a>
+            }
+            else
+            {
+                @team.LeagueName
+            }
+        </td>
         <td>@team.Nationality</td>
         <td>@team.StadiumName</td>
         <td>@team.StadiumCapacity</td>
@@ -40,3 +59,4 @@
 }
     </tbody>
 </table>
+</div>

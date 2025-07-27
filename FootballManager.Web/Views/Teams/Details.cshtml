@@ -10,12 +10,110 @@
 
 
 
-<div style="display: flex; flex-direction: row; align-items: flex-start; gap: 32px; margin-bottom: 32px;">
+<style>
+    .team-details-flex {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 32px;
+        margin-bottom: 32px;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .team-details-card {
+        background: #fafbfc;
+        border: 1px solid #e3e6ea;
+        border-radius: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        padding: 20px 18px 18px 18px;
+        margin-bottom: 0;
+    }
+    .team-details-card h3, .team-details-card h4 {
+        font-size: 1.1rem;
+        color: #444;
+        margin-top: 18px;
+        margin-bottom: 8px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+    }
+    .team-details-card dl {
+        margin-bottom: 0.5rem;
+    }
+    .team-details-card dt {
+        color: #888;
+        font-weight: 400;
+    }
+    .team-details-card dd {
+        color: #222;
+        font-weight: 500;
+    }
+    .team-details-staff ul, .team-details-players ul {
+        padding-left: 1.1em;
+        margin-bottom: 0.5em;
+    }
+    .team-details-staff li, .team-details-players li {
+        margin-bottom: 0.2em;
+    }
+    .team-details-players h3 {
+        margin-top: 0;
+    }
+    .formation-table {
+        border-radius: 8px;
+        border: 1px solid #e3e6ea;
+        background: #f7f8fa;
+    }
+    .formation-table td {
+        border: none;
+        padding: 0.4em 0.2em;
+        font-size: 0.98em;
+    }
+    .card.mb-3 {
+        margin-bottom: 1.2rem !important;
+        border-radius: 8px;
+        border: 1px solid #e3e6ea !important;
+        background: #f5f6f8 !important;
+    }
+    .card-title {
+        font-size: 1.05rem;
+        color: #555;
+        font-weight: 500;
+    }
+    .badge.bg-primary {
+        background: #3b82f6 !important;
+        font-weight: 400;
+        font-size: 0.95em;
+        border-radius: 6px;
+        padding: 0.15em 0.5em;
+    }
+</style>
+
+<div class="team-details-flex">
     <!-- Left: Team Info -->
-    <div style="flex: 1.2; min-width: 260px;">
+    <div class="team-details-card" style="flex: 1.2; min-width: 260px;">
         <dl class="row">
             <dt class="col-sm-4">League</dt>
-            <dd class="col-sm-8">@Model.LeagueName</dd>
+            <dd class="col-sm-8">
+                @{
+                    // Build league name to index map for correct league id link
+                    var leagueNames = Model.LeagueName != null ? new List<string> { Model.LeagueName } : new List<string>();
+                    var leagueNameToId = new Dictionary<string, int>();
+                    var allLeagueNames = ViewBag.AllLeagueNames as List<string>;
+                    if (allLeagueNames != null)
+                    {
+                        for (int i = 0; i < allLeagueNames.Count; i++)
+                        {
+                            leagueNameToId[allLeagueNames[i]] = i + 1;
+                        }
+                    }
+                }
+                @if (!string.IsNullOrEmpty(Model.LeagueName) && leagueNameToId.ContainsKey(Model.LeagueName))
+                {
+                    <a asp-controller="Leagues" asp-action="Details" asp-route-id="@leagueNameToId[Model.LeagueName]">@Model.LeagueName</a>
+                }
+                else
+                {
+                    @Model.LeagueName
+                }
+            </dd>
             <dt class="col-sm-4">Nationality</dt>
             <dd class="col-sm-8">@Model.Nationality</dd>
             <dt class="col-sm-4">Stadium Name</dt>
@@ -30,33 +128,35 @@
             <dd class="col-sm-8">@Model.GetSquadMoraleDescription()</dd>
         </dl>
         <h3>Recent Results</h3>
-        <p>@string.Join(" ", Model.RecentResults)</p>
+        <p style="margin-bottom: 0.7em; color: #3b3b3b;">@string.Join(" ", Model.RecentResults)</p>
         <h4>Form</h4>
-        <p>@Model.GetFormDescription()</p>
+        <p style="margin-bottom: 1.2em; color: #3b3b3b;">@Model.GetFormDescription()</p>
 
-        <h3>Staff Members</h3>
-        @if (Model.StaffMembers != null && Model.StaffMembers.Any())
-        {
-            <ul>
-            @foreach (var staff in Model.StaffMembers)
+        <div class="team-details-staff">
+            <h3>Staff Members</h3>
+            @if (Model.StaffMembers != null && Model.StaffMembers.Any())
             {
-                <li>
-                    <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@staff.Id">
-                        @if (staff.Job.ToString() == "Manager") {
-                            <strong>@staff.Name</strong> <span class="badge bg-primary">Manager</span>
-                            @if (staff.StartDate != null) { <span>(@staff.StartDate.Value.ToString("yyyy-MM-dd"))</span> }
-                        } else {
-                            @staff.Name
-                        }
-                    </a>
-                </li>
+                <ul>
+                @foreach (var staff in Model.StaffMembers)
+                {
+                    <li>
+                        <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@staff.Id">
+                            @if (staff.Job.ToString() == "Manager") {
+                                <strong>@staff.Name</strong> <span class="badge bg-primary">Manager</span>
+                                @if (staff.StartDate != null) { <span style="color:#888;">(@staff.StartDate.Value.ToString("yyyy-MM-dd"))</span> }
+                            } else {
+                                @staff.Name
+                            }
+                        </a>
+                    </li>
+                }
+                </ul>
             }
-            </ul>
-        }
-        else
-        {
-            <p>No staff members assigned.</p>
-        }
+            else
+            {
+                <p style="color:#888;">No staff members assigned.</p>
+            }
+        </div>
     </div>
     <!-- Center: Manager + Formation -->
     <div style="flex: 2; min-width: 400px;">
@@ -196,7 +296,7 @@
         </table>
     </div>
     <!-- Right: Players -->
-    <div style="flex: 0.6; min-width: 140px;">
+    <div class="team-details-card team-details-players" style="flex: 0.6; min-width: 140px;">
         <h3>Players</h3>
         @if (Model.Players != null && Model.Players.Any())
         {

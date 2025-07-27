@@ -4,6 +4,7 @@
     ViewData["Title"] = "Player Details";
 }
 
+<div class="minimal-card">
 <h1>@Model.Name</h1>
 <hr />
 
@@ -37,7 +38,7 @@
 </dl>
 
 <h3>Physical Attributes</h3>
-<table class="table table-bordered w-auto">
+<table class="minimal-table w-auto">
     <tr>
         <th>Height (m)</th>
         <th>Weight (kg)</th>
@@ -57,6 +58,7 @@
         <td>@Model.JumpingReach</td>
     </tr>
 </table>
+</div>
 
 <h3>Mental Attributes</h3>
 <table class="table table-bordered w-auto">

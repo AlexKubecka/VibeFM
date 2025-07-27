@@ -34,6 +34,14 @@ namespace FootballManager.Web.Controllers
 
             if (team == null) return NotFound();
 
+            // Pass all league names for correct league link mapping
+            var allLeagueNames = await _context.Teams
+                .Select(t => t.LeagueName)
+                .Distinct()
+                .Where(n => !string.IsNullOrEmpty(n))
+                .ToListAsync();
+            ViewBag.AllLeagueNames = allLeagueNames;
+
             return View(team);
         }
     }
