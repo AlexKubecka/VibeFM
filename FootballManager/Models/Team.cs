@@ -23,7 +23,9 @@ namespace FootballManager.Models
         public double Reputation { get; set; } // Team's reputation score
 
         // League
-        public string LeagueName { get; set; } // Name of the league the team belongs to (Temp FK)
+        public int LeagueId { get; set; } // Foreign key to League
+        public League League { get; set; } // Navigation property
+        public string LeagueName { get; set; } // (Optional: for display, can be removed after migration)
         
         // Recent Results
         // Store last N match results (e.g., 'W', 'D', 'L') and performance ratings (0-10)
@@ -59,6 +61,7 @@ namespace FootballManager.Models
         }
 
         // League Table Stats
+        public int GamesPlayed { get; set; }
         public int Wins { get; set; }
         public int Draws { get; set; }
         public int Losses { get; set; }

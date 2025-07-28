@@ -11,7 +11,7 @@ namespace FootballManager.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Nation { get; set; }
-        public List<Team> Teams { get; set; } = new List<Team>();
+        public ICollection<Team> Teams { get; set; } = new List<Team>();
 
         public League(string name, string nation)
         {
@@ -19,6 +19,9 @@ namespace FootballManager.Models
             Nation = nation;
         }
 
+        // Parameterless constructor for EF and object initializers
+        public League() { }
+        
         // Simulate matches between all teams (home and away)
         public void SimulateLeague()
         {

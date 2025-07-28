@@ -24,23 +24,14 @@
         </tr>
     </thead>
     <tbody>
-@{
-    // Build league name to index map for correct league id links
-    var leagueNames = Model.Select(t => t.LeagueName).Distinct().Where(n => !string.IsNullOrEmpty(n)).ToList();
-    var leagueNameToId = new Dictionary<string, int>();
-    for (int i = 0; i < leagueNames.Count; i++)
-    {
-        leagueNameToId[leagueNames[i]] = i + 1;
-    }
-}
 @foreach (var team in Model)
 {
     <tr>
         <td><a asp-action="Details" asp-route-id="@team.Id">@team.Name</a></td>
         <td>
-            @if (!string.IsNullOrEmpty(team.LeagueName) && leagueNameToId.ContainsKey(team.LeagueName))
+            @if (team.LeagueId > 0)
             {
-                <a asp-controller="Leagues" asp-action="Details" asp-route-id="@leagueNameToId[team.LeagueName]">@team.LeagueName</a>
+                <a asp-controller="Leagues" asp-action="Details" asp-route-id="@team.LeagueId">@team.LeagueName</a>
             }
             else
             {

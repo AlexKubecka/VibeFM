@@ -5,151 +5,126 @@
 }
 
 <div class="minimal-card">
-<h1>@Model.Name</h1>
-<hr />
 
-<dl class="row">
-    <dt class="col-sm-2">Age</dt>
-    <dd class="col-sm-10">@Model.Age</dd>
+<h1 style="margin-bottom:0.5em;">@Model.Name</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+    <div style="flex:1; min-width:220px;">
+        <table class="table table-sm table-borderless" style="width:auto; margin-bottom:0.7em;">
+            <tr><th>Age</th><td>@Model.Age</td></tr>
+            <tr><th>Position</th><td>@Model.Position</td></tr>
+            <tr><th>Nationality</th><td>@Model.Nationality</td></tr>
+            <tr><th>Team</th><td>
+                @if (Model.Team != null)
+                {
+                    <a asp-controller="Teams" asp-action="Details" asp-route-id="@Model.Team.Id">@Model.Team.Name</a>
+                }
+                else
+                {
+                    <span>Free Agent</span>
+                }
+            </td></tr>
+            <tr><th>Market Value</th><td>€@Model.MarketValue m</td></tr>
+            <tr><th>Morale</th><td>@Model.GetMoraleDescription()</td></tr>
+        </table>
 
-    <dt class="col-sm-2">Position</dt>
-    <dd class="col-sm-10">@Model.Position</dd>
-
-    <dt class="col-sm-2">Nationality</dt>
-    <dd class="col-sm-10">@Model.Nationality</dd>
-
-
-    <dt class="col-sm-2">Team</dt>
-    <dd class="col-sm-10">
-        @if (Model.Team != null)
-        {
-            <a asp-controller="Teams" asp-action="Details" asp-route-id="@Model.Team.Id">@Model.Team.Name</a>
-        }
-        else
-        {
-            <span>Free Agent</span>
-        }
-    </dd>
-
-    <dt class="col-sm-2">Market Value</dt>
-    <dd class="col-sm-10">€@Model.MarketValue m</dd>
-    <dt class="col-sm-2">Morale</dt>
-    <dd class="col-sm-10">@Model.GetMoraleDescription()</dd>
-</dl>
-
-<h3>Physical Attributes</h3>
-<table class="minimal-table w-auto">
-    <tr>
-        <th>Height (m)</th>
-        <th>Weight (kg)</th>
-        <th>Speed</th>
-        <th>Stamina</th>
-        <th>Strength</th>
-        <th>Agility</th>
-        <th>Jumping Reach</th>
-    </tr>
-    <tr>
-        <td>@Model.Height</td>
-        <td>@Model.Weight</td>
-        <td>@Model.Speed</td>
-        <td>@Model.Stamina</td>
-        <td>@Model.Strength</td>
-        <td>@Model.Agility</td>
-        <td>@Model.JumpingReach</td>
-    </tr>
-</table>
+        <table class="table table-sm table-bordered" style="width:auto; margin-bottom:0.7em; background:#f8f9fa;">
+            <tr><th colspan="2" style="text-align:center;">Stats</th></tr>
+            <tr><td>Games Played</td><td>@Model.GamesPlayed</td></tr>
+            <tr><td>Goals</td><td>@Model.Goals</td></tr>
+            <tr><td>Assists</td><td>@Model.Assists</td></tr>
+            @if (Model.Position != null && Model.Position.ToLower().Contains("goalkeeper")) {
+                <tr><td>Clean Sheets</td><td>@Model.CleanSheets</td></tr>
+            }
+            <tr><td>Performance</td><td>@Model.PerformanceRating</td></tr>
+        </table>
+    </div>
+    <div style="flex:2; min-width:320px;">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5em 1.2em;">
+            <div>
+                <strong>Physical</strong>
+                <div class="attr-grid">
+                    <span>Height:</span><span>@Model.Height</span>
+                    <span>Weight:</span><span>@Model.Weight</span>
+                    <span>Speed:</span><span>@Model.Speed</span>
+                    <span>Stamina:</span><span>@Model.Stamina</span>
+                    <span>Strength:</span><span>@Model.Strength</span>
+                    <span>Agility:</span><span>@Model.Agility</span>
+                    <span>Jumping:</span><span>@Model.JumpingReach</span>
+                </div>
+            </div>
+            <div>
+                <strong>Mental</strong>
+                <div class="attr-grid">
+                    <span>Decision:</span><span>@Model.DecisionMaking</span>
+                    <span>Leadership:</span><span>@Model.Leadership</span>
+                    <span>Work Rate:</span><span>@Model.WorkRate</span>
+                    <span>Teamwork:</span><span>@Model.Teamwork</span>
+                    <span>Vision:</span><span>@Model.Vision</span>
+                    <span>Concentration:</span><span>@Model.Concentration</span>
+                    <span>Determination:</span><span>@Model.Determination</span>
+                    <span>Composure:</span><span>@Model.Composure</span>
+                    <span>Anticipation:</span><span>@Model.Anticipation</span>
+                </div>
+            </div>
+            <div>
+                <strong>Technical</strong>
+                <div class="attr-grid">
+                    <span>Passing:</span><span>@Model.Passing</span>
+                    <span>Shooting:</span><span>@Model.Shooting</span>
+                    <span>Dribbling:</span><span>@Model.Dribbling</span>
+                    <span>Tackling:</span><span>@Model.Tackling</span>
+                    <span>Crossing:</span><span>@Model.Crossing</span>
+                    <span>Finishing:</span><span>@Model.Finishing</span>
+                    <span>First Touch:</span><span>@Model.FirstTouch</span>
+                    <span>Heading:</span><span>@Model.Heading</span>
+                    <span>Marking:</span><span>@Model.Marking</span>
+                    <span>Positioning:</span><span>@Model.Positioning</span>
+                </div>
+            </div>
+            <div>
+                <strong>Goalkeeper</strong>
+                <div class="attr-grid">
+                    <span>Handling:</span><span>@Model.Handling</span>
+                    <span>Reflexes:</span><span>@Model.Reflexes</span>
+                    <span>Aerial:</span><span>@Model.AerialAbility</span>
+                    <span>Communication:</span><span>@Model.Communication</span>
+                    <span>Throwing:</span><span>@Model.Throwing</span>
+                    <span>1v1s:</span><span>@Model.OneOnOnes</span>
+                </div>
+            </div>
+            <div>
+                <strong>Personality</strong>
+                <div class="attr-grid">
+                    <span>Professionalism:</span><span>@Model.Professionalism</span>
+                    <span>Sportsmanship:</span><span>@Model.Sportsmanship</span>
+                    <span>Temperament:</span><span>@Model.Temperament</span>
+                    <span>Ambition:</span><span>@Model.Ambition</span>
+                    <span>Loyalty:</span><span>@Model.Loyalty</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<h3>Mental Attributes</h3>
-<table class="table table-bordered w-auto">
-    <tr>
-        <th>Decision Making</th>
-        <th>Leadership</th>
-        <th>Work Rate</th>
-        <th>Teamwork</th>
-        <th>Vision</th>
-        <th>Concentration</th>
-        <th>Determination</th>
-        <th>Composure</th>
-        <th>Anticipation</th>
-    </tr>
-    <tr>
-        <td>@Model.DecisionMaking</td>
-        <td>@Model.Leadership</td>
-        <td>@Model.WorkRate</td>
-        <td>@Model.Teamwork</td>
-        <td>@Model.Vision</td>
-        <td>@Model.Concentration</td>
-        <td>@Model.Determination</td>
-        <td>@Model.Composure</td>
-        <td>@Model.Anticipation</td>
-    </tr>
-</table>
-
-<h3>Technical Attributes</h3>
-<table class="table table-bordered w-auto">
-    <tr>
-        <th>Passing</th>
-        <th>Shooting</th>
-        <th>Dribbling</th>
-        <th>Tackling</th>
-        <th>Crossing</th>
-        <th>Finishing</th>
-        <th>First Touch</th>
-        <th>Heading</th>
-        <th>Marking</th>
-        <th>Positioning</th>
-    </tr>
-    <tr>
-        <td>@Model.Passing</td>
-        <td>@Model.Shooting</td>
-        <td>@Model.Dribbling</td>
-        <td>@Model.Tackling</td>
-        <td>@Model.Crossing</td>
-        <td>@Model.Finishing</td>
-        <td>@Model.FirstTouch</td>
-        <td>@Model.Heading</td>
-        <td>@Model.Marking</td>
-        <td>@Model.Positioning</td>
-    </tr>
-</table>
-
-<h3>Goalkeeper Attributes</h3>
-<table class="table table-bordered w-auto">
-    <tr>
-        <th>Handling</th>
-        <th>Reflexes</th>
-        <th>Aerial Ability</th>
-        <th>Communication</th>
-        <th>Throwing</th>
-        <th>One On Ones</th>
-    </tr>
-    <tr>
-        <td>@Model.Handling</td>
-        <td>@Model.Reflexes</td>
-        <td>@Model.AerialAbility</td>
-        <td>@Model.Communication</td>
-        <td>@Model.Throwing</td>
-        <td>@Model.OneOnOnes</td>
-    </tr>
-</table>
-
-<h3>Personality Attributes</h3>
-<table class="table table-bordered w-auto">
-    <tr>
-        <th>Professionalism</th>
-        <th>Sportsmanship</th>
-        <th>Temperament</th>
-        <th>Ambition</th>
-        <th>Loyalty</th>
-    </tr>
-    <tr>
-        <td>@Model.Professionalism</td>
-        <td>@Model.Sportsmanship</td>
-        <td>@Model.Temperament</td>
-        <td>@Model.Ambition</td>
-        <td>@Model.Loyalty</td>
-    </tr>
-</table>
+<style>
+    .attr-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.1em 0.7em;
+        font-size: 0.98em;
+        margin-bottom: 0.5em;
+    }
+    .attr-grid span:nth-child(odd) {
+        color: #888;
+        font-weight: 400;
+        text-align: right;
+        padding-right: 0.3em;
+    }
+    .attr-grid span:nth-child(even) {
+        color: #222;
+        font-weight: 500;
+        text-align: left;
+    }
+</style>
 
 <a asp-action="Index">Back to List</a>

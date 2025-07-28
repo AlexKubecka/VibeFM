@@ -92,22 +92,9 @@
         <dl class="row">
             <dt class="col-sm-4">League</dt>
             <dd class="col-sm-8">
-                @{
-                    // Build league name to index map for correct league id link
-                    var leagueNames = Model.LeagueName != null ? new List<string> { Model.LeagueName } : new List<string>();
-                    var leagueNameToId = new Dictionary<string, int>();
-                    var allLeagueNames = ViewBag.AllLeagueNames as List<string>;
-                    if (allLeagueNames != null)
-                    {
-                        for (int i = 0; i < allLeagueNames.Count; i++)
-                        {
-                            leagueNameToId[allLeagueNames[i]] = i + 1;
-                        }
-                    }
-                }
-                @if (!string.IsNullOrEmpty(Model.LeagueName) && leagueNameToId.ContainsKey(Model.LeagueName))
+                @if (Model.LeagueId > 0)
                 {
-                    <a asp-controller="Leagues" asp-action="Details" asp-route-id="@leagueNameToId[Model.LeagueName]">@Model.LeagueName</a>
+                    <a asp-controller="Leagues" asp-action="Details" asp-route-id="@Model.LeagueId">@Model.LeagueName</a>
                 }
                 else
                 {
@@ -131,6 +118,37 @@
         <p style="margin-bottom: 0.7em; color: #3b3b3b;">@string.Join(" ", Model.RecentResults)</p>
         <h4>Form</h4>
         <p style="margin-bottom: 1.2em; color: #3b3b3b;">@Model.GetFormDescription()</p>
+
+    <!-- All Matches: below Staff Members -->
+    <h4 style="margin-top:2em;">All Matches</h4>
+    <table class="table table-sm" style="font-size:0.97em;">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>Venue</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+@{
+    // Use all teams in the database for lookup
+    var allTeams = (IEnumerable<FootballManager.Models.Team>)ViewBag.AllTeams ?? new List<FootballManager.Models.Team>();
+    foreach (var match in (IEnumerable<FootballManager.Models.Match>)ViewBag.TeamMatches)
+    {
+        var isHome = match.HomeTeamId == Model.Id;
+        var opponentId = isHome ? match.AwayTeamId : match.HomeTeamId;
+        var opponent = allTeams.FirstOrDefault(t => t.Id == opponentId);
+        <tr>
+            <td>@match.Date.ToString("yyyy-MM-dd")</td>
+            <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@opponentId">@(opponent != null ? opponent.Name : "Unknown")</a></td>
+            <td>@(isHome ? "Home" : "Away")</td>
+            <td><strong>@match.HomeGoals</strong> - <strong>@match.AwayGoals</strong></td>
+        </tr>
+    }
+}
+        </tbody>
+    </table>
 
         <div class="team-details-staff">
             <h3>Staff Members</h3>

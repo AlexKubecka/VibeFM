@@ -54,8 +54,28 @@ namespace FootballManager.Utilities
                 return;
             }
 
+            // Clear existing data to avoid FK constraint errors
+            dbContext.Players.RemoveRange(dbContext.Players);
+            dbContext.StaffMembers.RemoveRange(dbContext.StaffMembers);
+            dbContext.Teams.RemoveRange(dbContext.Teams);
+            dbContext.Leagues.RemoveRange(dbContext.Leagues);
+            dbContext.SaveChanges();
+
             string leagueName = wrapper.LeagueName ?? "Unknown";
             string leagueNation = wrapper.LeagueNation ?? "Unknown";
+
+            // Create or get League entity
+            var league = dbContext.Leagues.FirstOrDefault(l => l.Name == leagueName && l.Nation == leagueNation);
+            if (league == null)
+            {
+                league = new League
+                {
+                    Name = leagueName,
+                    Nation = leagueNation
+                };
+                dbContext.Leagues.Add(league);
+                dbContext.SaveChanges();
+            }
 
             foreach (var kvp in wrapper.Teams)
             {
@@ -83,6 +103,7 @@ namespace FootballManager.Utilities
                         StadiumCapacity = teamInfo.StadiumCapacity > 0 ? teamInfo.StadiumCapacity : 50000,
                         Value = ParseMarketValue(teamInfo.TotalMarketValue),
                         LeagueName = leagueName,
+                        LeagueId = league.Id, // Assign LeagueId
                         Wins = 0,
                         Draws = 0,
                         Losses = 0,
@@ -91,6 +112,15 @@ namespace FootballManager.Utilities
                     };
                     dbContext.Teams.Add(team);
                     dbContext.SaveChanges();
+                }
+                else
+                {
+                    // Ensure LeagueId is set for existing teams
+                    if (team.LeagueId != league.Id)
+                    {
+                        team.LeagueId = league.Id;
+                        dbContext.SaveChanges();
+                    }
                 }
                 // Add or update manager as StaffMember
                 if (!string.IsNullOrWhiteSpace(managerName))
@@ -129,7 +159,12 @@ namespace FootballManager.Utilities
                                 TeamId = team.Id,
                                 MarketValue = ParseMarketValue(p.MarketValue),
                                 Position = GetPositionDescription(ParsePosition(p.Position)),
-                                Morale = 0.5 // Default morale
+                                Morale = 0.5, // Default morale
+                                GamesPlayed = 0,
+                                Goals = 0,
+                                Assists = 0,
+                                CleanSheets = 0,
+                                PerformanceRating = 0
                             });
                         }
                     }

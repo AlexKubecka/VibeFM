@@ -39,6 +39,7 @@
         <tr>
             <th>Position</th>
             <th>Name</th>
+            <th>Games Played</th>
             <th>Wins</th>
             <th>Draws</th>
             <th>Losses</th>
@@ -55,6 +56,7 @@
     <tr>
         <td>@(i + 1)</td>
         <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@row.Team.Id">@row.Team.Name</a></td>
+        <td>@row.Team.GamesPlayed</td>
         <td>@row.Wins</td>
         <td>@row.Draws</td>
         <td>@row.Losses</td>
@@ -89,3 +91,124 @@
 }
     </tbody>
 </table>
+
+
+
+<h2>League Schedule</h2>
+<div style="margin-bottom:1em;">
+    <button class="btn btn-outline-primary btn-sm" type="button" onclick="expandAll()">Expand All</button>
+    <button class="btn btn-outline-secondary btn-sm" type="button" onclick="collapseAll()">Collapse All</button>
+</div>
+@{
+    var teams = Model.Teams.OrderBy(t => t.Id).ToList();
+    int numTeams = teams.Count;
+    var matches = ((IEnumerable<FootballManager.Models.Match>)ViewBag.Matches).ToList();
+    var matchDict = matches.ToDictionary(m => $"{m.HomeTeamId}_{m.AwayTeamId}_{m.Date.Date:yyyy-MM-dd}");
+    var firstMatchDate = new DateTime(2025, 8, 10);
+    // Generate double round-robin schedule (home/away for each pair)
+    var schedule = new List<(int HomeId, int AwayId, DateTime Date)>();
+    int totalRounds = (numTeams - 1) * 2;
+    int gamesPerWeek = numTeams / 2;
+    // Berger tables for first round (home/away)
+    var teamIds = teams.Select(t => t.Id).ToList();
+    if (numTeams % 2 != 0) teamIds.Add(-1); // bye if odd
+    int n = teamIds.Count;
+    for (int round = 0; round < n - 1; round++)
+    {
+        for (int i = 0; i < n / 2; i++)
+        {
+            int t1 = teamIds[i];
+            int t2 = teamIds[n - 1 - i];
+            if (t1 != -1 && t2 != -1)
+            {
+                var date1 = firstMatchDate.AddDays(7 * round);
+                var date2 = firstMatchDate.AddDays(7 * (round + n - 1));
+                schedule.Add((t1, t2, date1)); // first half
+                schedule.Add((t2, t1, date2)); // second half (reverse fixture)
+            }
+        }
+        // rotate
+        var temp = teamIds[n - 1];
+        for (int i = n - 1; i > 1; i--)
+            teamIds[i] = teamIds[i - 1];
+        teamIds[1] = temp;
+    }
+    // Group by matchweek (date)
+    var scheduleWeeks = schedule.GroupBy(s => s.Date).OrderBy(g => g.Key).ToList();
+}
+<div id="schedule-accordion">
+@for (int week = 0; week < scheduleWeeks.Count; week++)
+{
+    var weekGroup = scheduleWeeks[week];
+    var weekDate = weekGroup.Key;
+    <div class="card minimal-card" style="margin-bottom:8px;">
+        <div class="card-header" style="padding:0.5em 1em;">
+            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#week_collapse_@(week)" aria-expanded="false" aria-controls="week_collapse_@(week)">
+                Matchweek @(week + 1) (@weekDate.ToString("yyyy-MM-dd"))
+            </button>
+        </div>
+        <div id="week_collapse_@(week)" class="collapse">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Home</th>
+                        <th></th>
+                        <th>Away</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var fixture in weekGroup)
+                {
+                    var home = Model.Teams.FirstOrDefault(t => t.Id == fixture.HomeId);
+                    var away = Model.Teams.FirstOrDefault(t => t.Id == fixture.AwayId);
+                    string matchKey = $"{fixture.HomeId}_{fixture.AwayId}_{fixture.Date.Date:yyyy-MM-dd}";
+                    FootballManager.Models.Match match = null;
+                    if (matchDict.TryGetValue(matchKey, out var foundMatch)) match = foundMatch;
+                    <tr>
+                        <td>@fixture.Date.ToString("yyyy-MM-dd")</td>
+                        <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@fixture.HomeId">@(home != null ? home.Name : "?")</a></td>
+                        <td>vs</td>
+                        <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@fixture.AwayId">@(away != null ? away.Name : "?")</a></td>
+                        <td>
+                            @if (match != null)
+                            {
+                                <span><strong>@match.HomeGoals</strong> - <strong>@match.AwayGoals</strong></span>
+                            }
+                            else
+                            {
+                                <span style="color:#bbb;">-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function expandAll() {
+    let i = 0;
+    while (true) {
+        var el = document.getElementById('week_collapse_' + i);
+        if (!el) break;
+        var collapse = bootstrap.Collapse.getOrCreateInstance(el);
+        collapse.show();
+        i++;
+    }
+}
+function collapseAll() {
+    let i = 0;
+    while (true) {
+        var el = document.getElementById('week_collapse_' + i);
+        if (!el) break;
+        var collapse = bootstrap.Collapse.getOrCreateInstance(el);
+        collapse.hide();
+        i++;
+    }
+}
+</script>

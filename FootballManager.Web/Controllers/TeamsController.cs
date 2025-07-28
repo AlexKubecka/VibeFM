@@ -42,6 +42,17 @@ namespace FootballManager.Web.Controllers
                 .ToListAsync();
             ViewBag.AllLeagueNames = allLeagueNames;
 
+            // Get all matches for this team
+            var matches = await _context.Matches
+                .Where(m => m.HomeTeamId == id || m.AwayTeamId == id)
+                .OrderByDescending(m => m.Date)
+                .ToListAsync();
+            ViewBag.TeamMatches = matches;
+
+            // Pass all teams for opponent lookup
+            var allTeams = await _context.Teams.ToListAsync();
+            ViewBag.AllTeams = allTeams;
+
             return View(team);
         }
     }

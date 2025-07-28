@@ -67,6 +67,16 @@ namespace FootballManager.Models
         public int Ambition { get; set; } = 50;
         public int Loyalty { get; set; } = 50;
 
+        // Stats
+        public int GamesPlayed { get; set; } = 0;
+        public int Goals { get; set; } = 0;
+        public int Assists { get; set; } = 0;
+        public int CleanSheets { get; set; } = 0; // For goalkeepers
+        // Store the sum of all match ratings and count to compute average
+        public double PerformanceRating { get; set; } = 6.5; // Average match rating, default 6.5
+        public double TotalMatchRating { get; set; } = 0.0; // Sum of all match ratings
+        public int MatchRatingCount { get; set; } = 0; // Number of matches rated
+        
         // Parameterless constructor for EF Core
         public Player() { }
 
@@ -138,6 +148,14 @@ namespace FootballManager.Models
             Console.WriteLine($"Overall Rating: {CalculateOverallRating()}");
         }
 
+        // Method to add a match rating and update the average
+        public void AddMatchRating(double rating)
+        {
+            TotalMatchRating += rating;
+            MatchRatingCount++;
+            PerformanceRating = Math.Round(TotalMatchRating / MatchRatingCount, 2);
+        }
+
         // Method to Display Player Info as a String
         public override string ToString()
         {
@@ -179,6 +197,7 @@ namespace FootballManager.Models
         Anticipation:   {Anticipation}/100
 
         Overall Rating: {CalculateOverallRating()}
+        Average Performance: {PerformanceRating}
         ";
         }
     }
