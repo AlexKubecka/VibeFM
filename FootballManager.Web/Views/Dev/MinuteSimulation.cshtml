@@ -1,0 +1,212 @@
+@{
+<style>
+    .minimal-link {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.15s, font-weight 0.15s;
+    }
+    .minimal-link:hover, .minimal-link:focus {
+        color: #222;
+        text-decoration: underline;
+        font-weight: 600;
+    }
+</style>
+    ViewData["Title"] = "Minute-by-Minute Simulation";
+    var sim = ViewBag.SimState as FootballManager.Web.Models.GameSimulationState;
+}
+<div class="minimal-card" style="max-width:1400px;margin:2em auto;">
+    <h1>Minute-by-Minute Simulation</h1>
+    <div style="display:flex;align-items:flex-start;gap:2.5em;">
+        <!-- Home Pitch and Formation (left) -->
+        <div style="flex:0 0 320px;">
+            <div style="text-align:center;margin-bottom:0.5em;font-weight:600;">
+                <a class="minimal-link" href="/Teams/Details/@sim.HomeTeamId" style="color:#1e40af;">@sim.HomeTeamName</a>
+            </div>
+            <div style="position:relative;width:400px;height:260px;margin:auto;padding:0;">
+                <img src="/images/Pitch1.jpg" alt="Pitch" style="width:100%;height:100%;border-radius:12px;box-shadow:0 2px 8px #0001;opacity:0.45;transform:rotate(90deg);position:absolute;left:0;top:0;z-index:0;" />
+                @{ 
+                    var homeStarters = sim.HomePlayers.Where(p => p.Starter).ToList();
+                    var gk = homeStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("goalkeeper"));
+                    var lb = homeStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("left back"));
+                    var cb1 = homeStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("center back")).Take(2).ToList().ElementAtOrDefault(0);
+                    var cb2 = homeStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("center back")).Take(2).ToList().ElementAtOrDefault(1);
+                    var rb = homeStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("right back"));
+                    var cm1 = homeStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("central midfielder")).Take(3).ToList().ElementAtOrDefault(0);
+                    var cm2 = homeStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("central midfielder")).Take(3).ToList().ElementAtOrDefault(1);
+                    var cm3 = homeStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("central midfielder")).Take(3).ToList().ElementAtOrDefault(2);
+                    var lw = homeStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("left winger"));
+                    var st = homeStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("striker"));
+                    var rw = homeStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("right winger"));
+                }
+                <!-- Home: GK -->
+                <div style="position:absolute;left:180px;top:210px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(gk != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;font-weight:bold;' href='/Players/Details/{gk.PlayerId}'>{(gk.Name.Contains(' ') ? gk.Name.Split(' ').Last() : gk.Name)}</a><div style='font-size:0.8em;color:#888;'>(GK)</div>") : "")
+                </div>
+                <!-- Home: LB, CB1, CB2, RB -->
+                <div style="position:absolute;left:30px;top:170px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(lb != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{lb.PlayerId}'>{(lb.Name.Contains(' ') ? lb.Name.Split(' ').Last() : lb.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:90px;top:140px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cb1 != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{cb1.PlayerId}'>{(cb1.Name.Contains(' ') ? cb1.Name.Split(' ').Last() : cb1.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:270px;top:140px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cb2 != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{cb2.PlayerId}'>{(cb2.Name.Contains(' ') ? cb2.Name.Split(' ').Last() : cb2.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:330px;top:170px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(rb != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{rb.PlayerId}'>{(rb.Name.Contains(' ') ? rb.Name.Split(' ').Last() : rb.Name)}</a>") : "")
+                </div>
+                <!-- Home: CM1, CM2, CM3 -->
+                <div style="position:absolute;left:70px;top:90px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cm1 != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{cm1.PlayerId}'>{(cm1.Name.Contains(' ') ? cm1.Name.Split(' ').Last() : cm1.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:180px;top:60px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cm2 != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{cm2.PlayerId}'>{(cm2.Name.Contains(' ') ? cm2.Name.Split(' ').Last() : cm2.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:290px;top:90px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cm3 != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{cm3.PlayerId}'>{(cm3.Name.Contains(' ') ? cm3.Name.Split(' ').Last() : cm3.Name)}</a>") : "")
+                </div>
+                <!-- Home: LW, ST, RW -->
+                <div style="position:absolute;left:30px;top:30px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(lw != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{lw.PlayerId}'>{(lw.Name.Contains(' ') ? lw.Name.Split(' ').Last() : lw.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:180px;top:10px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(st != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{st.PlayerId}'>{(st.Name.Contains(' ') ? st.Name.Split(' ').Last() : st.Name)}</a>") : "")
+                </div>
+                <div style="position:absolute;left:330px;top:30px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(rw != null ? Html.Raw($"<a class='minimal-link' style='color:#1e40af;' href='/Players/Details/{rw.PlayerId}'>{(rw.Name.Contains(' ') ? rw.Name.Split(' ').Last() : rw.Name)}</a>") : "")
+                </div>
+            </div>
+        </div>
+        <!-- Center: Match Info and Stats -->
+        <div style="flex:1;min-width:350px;max-width:600px;">
+            <h2 style="text-align:center;">
+                <a class="minimal-link" href="/Teams/Details/@sim.HomeTeamId">@sim.HomeTeamName</a> <b>@sim.HomeScore</b> - <b>@sim.AwayScore</b> <a class="minimal-link" href="/Teams/Details/@sim.AwayTeamId">@sim.AwayTeamName</a>
+            </h2>
+            <h3 style="text-align:center;">Minute: <b>@sim.CurrentMinute</b> / 90</h3>
+            <div style="text-align:center;">
+                <form asp-controller="Dev" asp-action="SimulateNextMinute" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-primary" @(sim.CurrentMinute >= 90 ? "disabled" : "")>Simulate Next Minute</button>
+                </form>
+                <form asp-controller="Dev" asp-action="SimulateFullGame" method="post" style="display:inline; margin-left:1em;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger" @(sim.CurrentMinute >= 90 ? "disabled" : "")>Simulate Full Game</button>
+                </form>
+                @if (sim.CurrentMinute >= 90)
+                {
+                    <span style="margin-left:1em;color:green;font-weight:bold;">Match Finished</span>
+                }
+            </div>
+            <hr />
+            <h4>Events</h4>
+            <ul>
+                @foreach (var ev in sim.Events)
+                {
+                    <li>@ev</li>
+                }
+            </ul>
+            <hr />
+            <h4>Player Stats</h4>
+            <div style="display:flex;gap:2em;">
+                <div>
+                    <h5>@sim.HomeTeamName</h5>
+                    <table class="table table-sm">
+                        <thead><tr><th>Name</th><th>G</th><th>A</th><th>Y</th><th>R</th><th>Rating</th></tr></thead>
+                        <tbody>
+                        @foreach (var p in sim.HomePlayers)
+                        {
+                            <tr>
+                                <td><a class="minimal-link" href="/Players/Details/@p.PlayerId">@p.Name</a></td>
+                                <td>@p.Goals</td>
+                                <td>@p.Assists</td>
+                                <td>@p.YellowCards</td>
+                                <td>@p.RedCards</td>
+                                <td>@(p.MatchRating.ToString("0.0"))</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h5>@sim.AwayTeamName</h5>
+                    <table class="table table-sm">
+                        <thead><tr><th>Name</th><th>G</th><th>A</th><th>Y</th><th>R</th><th>Rating</th></tr></thead>
+                        <tbody>
+                        @foreach (var p in sim.AwayPlayers)
+                        {
+                            <tr>
+                                <td><a class="minimal-link" href="/Players/Details/@p.PlayerId">@p.Name</a></td>
+                                <td>@p.Goals</td>
+                                <td>@p.Assists</td>
+                                <td>@p.YellowCards</td>
+                                <td>@p.RedCards</td>
+                                <td>@(p.MatchRating.ToString("0.0"))</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Away Pitch and Formation (right) -->
+        <div style="flex:0 0 320px;">
+            <div style="text-align:center;margin-bottom:0.5em;font-weight:600;">
+                <a class="minimal-link" href="/Teams/Details/@sim.AwayTeamId" style="color:#b91c1c;">@sim.AwayTeamName</a>
+            </div>
+            <div style="position:relative;width:400px;height:260px;margin:auto;padding:0;">
+                <img src="/images/Pitch1.jpg" alt="Pitch" style="width:100%;height:100%;border-radius:12px;box-shadow:0 2px 8px #0001;opacity:0.45;transform:rotate(90deg);position:absolute;left:0;top:0;z-index:0;" />
+                @{ 
+                    var awayStarters = sim.AwayPlayers.Where(p => p.Starter).ToList();
+                    var gkA = awayStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("goalkeeper"));
+                    var lbA = awayStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("left back"));
+                    var cbA1 = awayStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("center back")).Take(2).ToList().ElementAtOrDefault(0);
+                    var cbA2 = awayStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("center back")).Take(2).ToList().ElementAtOrDefault(1);
+                    var rbA = awayStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("right back"));
+                    var cmA1 = awayStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("central midfielder")).Take(3).ToList().ElementAtOrDefault(0);
+                    var cmA2 = awayStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("central midfielder")).Take(3).ToList().ElementAtOrDefault(1);
+                    var cmA3 = awayStarters.Where(p => p.Position != null && p.Position.ToLower().Contains("central midfielder")).Take(3).ToList().ElementAtOrDefault(2);
+                    var lwA = awayStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("left winger"));
+                    var stA = awayStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("striker"));
+                    var rwA = awayStarters.FirstOrDefault(p => p.Position != null && p.Position.ToLower().Contains("right winger"));
+                }
+                <!-- Away: GK -->
+                <div style="position:absolute;left:180px;top:210px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(gkA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;font-weight:bold;' href='/Players/Details/{gkA.PlayerId}'>" + (gkA.Name.Contains(' ') ? gkA.Name.Split(' ').Last() : gkA.Name) + "</a><div style='font-size:0.8em;color:#888;'>(GK)</div>") : "")
+                </div>
+                <!-- Away: LB, CB1, CB2, RB -->
+                <div style="position:absolute;left:30px;top:170px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(lbA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{lbA.PlayerId}'>" + (lbA.Name.Contains(' ') ? lbA.Name.Split(' ').Last() : lbA.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:270px;top:140px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cbA2 != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{cbA2.PlayerId}'>" + (cbA2.Name.Contains(" ") ? cbA2.Name.Split(' ').Last() : cbA2.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:330px;top:170px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(rbA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{rbA.PlayerId}'>" + (rbA.Name.Contains(" ") ? rbA.Name.Split(' ').Last() : rbA.Name) + "</a>") : "")
+                </div>
+                <!-- Away: CM1, CM2, CM3 -->
+                <div style="position:absolute;left:70px;top:90px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cmA1 != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{cmA1.PlayerId}'>" + (cmA1.Name.Contains(" ") ? cmA1.Name.Split(' ').Last() : cmA1.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:180px;top:60px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cmA2 != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{cmA2.PlayerId}'>" + (cmA2.Name.Contains(" ") ? cmA2.Name.Split(' ').Last() : cmA2.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:290px;top:90px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(cmA3 != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{cmA3.PlayerId}'>" + (cmA3.Name.Contains(" ") ? cmA3.Name.Split(' ').Last() : cmA3.Name) + "</a>") : "")
+                </div>
+                <!-- Away: LW, ST, RW -->
+                <div style="position:absolute;left:30px;top:30px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(lwA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{lwA.PlayerId}'>" + (lwA.Name.Contains(" ") ? lwA.Name.Split(' ').Last() : lwA.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:180px;top:10px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(stA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{stA.PlayerId}'>" + (stA.Name.Contains(" ") ? stA.Name.Split(' ').Last() : stA.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:330px;top:30px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(rwA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{rwA.PlayerId}'>" + (rwA.Name.Contains(" ") ? rwA.Name.Split(' ').Last() : rwA.Name) + "</a>") : "")
+                </div>
+                <div style="position:absolute;left:330px;top:30px;width:40px;text-align:center;z-index:1;padding:0;margin:0;background:none;">
+                    @(rwA != null ? Html.Raw($"<a class='minimal-link' style='color:#b91c1c;' href='/Players/Details/{rwA.PlayerId}'>" + (rwA.Name.Contains(' ') ? rwA.Name.Split(' ').Last() : rwA.Name) + "</a>") : "")
+                </div>
+            </div>
+        </div>
+    </div>

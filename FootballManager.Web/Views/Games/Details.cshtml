@@ -1,0 +1,118 @@
+@model FootballManager.Models.Match
+@using FootballManager.Models
+@inject FootballManager.Data.FootballManagerDbContext Db
+@{
+    ViewData["Title"] = $"Game Details - {Model.Date:yyyy-MM-dd}";
+    var home = Model.HomeTeam;
+    var away = Model.AwayTeam;
+    var homeStats = Db.PlayerMatchStats.Where(s => s.MatchId == Model.Id && s.TeamId == Model.HomeTeamId).ToList();
+    var awayStats = Db.PlayerMatchStats.Where(s => s.MatchId == Model.Id && s.TeamId == Model.AwayTeamId).ToList();
+    var homePlayers = homeStats.Join(Db.Players, s => s.PlayerId, p => p.Id, (s, p) => new { Stat = s, Player = p }).ToList();
+    var awayPlayers = awayStats.Join(Db.Players, s => s.PlayerId, p => p.Id, (s, p) => new { Stat = s, Player = p }).ToList();
+}
+<div class="minimal-card">
+    <h1>Game Details</h1>
+    <h2>@home?.Name vs @away?.Name (@Model.Date.ToString("yyyy-MM-dd"))</h2>
+    <h3>Score: <span style="font-weight:bold;">@Model.HomeGoals - @Model.AwayGoals</span></h3>
+    <hr />
+    <div style="margin-bottom:1em;">
+        <form method="post" asp-action="SimulateMinute" asp-controller="Games" asp-route-id="@Model.Id">
+            <button type="submit" class="btn btn-primary">Simulate Next Minute</button>
+            <span style="margin-left:1em;">Current Minute: <b>@(ViewBag.CurrentMinute ?? 0)</b> / 90</span>
+        </form>
+        @if (ViewBag.SimulationEvents != null)
+        {
+            <div style="margin-top:1em;">
+                <b>Events so far:</b>
+                <ul>
+                @foreach (var ev in (List<string>)ViewBag.SimulationEvents)
+                {
+                    <li>@ev</li>
+                }
+                </ul>
+            </div>
+        }
+    </div>
+    <hr />
+    <h4>Goal Scorers & Assists</h4>
+    <div style="display:flex; gap:2em;">
+        <div>
+            <h5>@home?.Name</h5>
+            <ul>
+            @foreach (var p in homePlayers.Where(x => x.Stat.Goals > 0))
+            {
+                <li><b>@p.Player.Name</b> (@p.Stat.Goals goal(s))
+                    @if (p.Stat.Assists > 0) { <span>+ @p.Stat.Assists assist(s)</span> }
+                </li>
+            }
+            </ul>
+        </div>
+        <div>
+            <h5>@away?.Name</h5>
+            <ul>
+            @foreach (var p in awayPlayers.Where(x => x.Stat.Goals > 0))
+            {
+                <li><b>@p.Player.Name</b> (@p.Stat.Goals goal(s))
+                    @if (p.Stat.Assists > 0) { <span>+ @p.Stat.Assists assist(s)</span> }
+                </li>
+            }
+            </ul>
+        </div>
+    </div>
+    <hr />
+    <h4>Starters & Cards</h4>
+    <div style="display:flex; gap:2em;">
+        <div>
+            <h5>@home?.Name Starters</h5>
+            <ul>
+            @foreach (var p in homePlayers.Where(x => x.Stat.Starter))
+            {
+                <li>@p.Player.Name
+                    @if (p.Stat.YellowCards > 0) { <span style="color:gold;">&#x26AB; @p.Stat.YellowCards</span> }
+                    @if (p.Stat.RedCards > 0) { <span style="color:red;">&#x26AB; @p.Stat.RedCards</span> }
+                </li>
+            }
+            </ul>
+        </div>
+        <div>
+            <h5>@away?.Name Starters</h5>
+            <ul>
+            @foreach (var p in awayPlayers.Where(x => x.Stat.Starter))
+            {
+                <li>@p.Player.Name
+                    @if (p.Stat.YellowCards > 0) { <span style="color:gold;">&#x26AB; @p.Stat.YellowCards</span> }
+                    @if (p.Stat.RedCards > 0) { <span style="color:red;">&#x26AB; @p.Stat.RedCards</span> }
+                </li>
+            }
+            </ul>
+        </div>
+    </div>
+    <hr />
+    <h4>All Players</h4>
+    <div style="display:flex; gap:2em;">
+        <div>
+            <h5>@home?.Name</h5>
+            <table class="table table-sm">
+                <thead><tr><th>Name</th><th>Goals</th><th>Assists</th><th>Yellows</th><th>Reds</th><th>Minutes</th><th>Rating</th></tr></thead>
+                <tbody>
+                @foreach (var p in homePlayers)
+                {
+                    <tr><td>@p.Player.Name</td><td>@p.Stat.Goals</td><td>@p.Stat.Assists</td><td>@p.Stat.YellowCards</td><td>@p.Stat.RedCards</td><td>@p.Stat.MinutesPlayed</td><td>@p.Stat.MatchRating.ToString("0.00")</td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h5>@away?.Name</h5>
+            <table class="table table-sm">
+                <thead><tr><th>Name</th><th>Goals</th><th>Assists</th><th>Yellows</th><th>Reds</th><th>Minutes</th><th>Rating</th></tr></thead>
+                <tbody>
+                @foreach (var p in awayPlayers)
+                {
+                    <tr><td>@p.Player.Name</td><td>@p.Stat.Goals</td><td>@p.Stat.Assists</td><td>@p.Stat.YellowCards</td><td>@p.Stat.RedCards</td><td>@p.Stat.MinutesPlayed</td><td>@p.Stat.MatchRating.ToString("0.00")</td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

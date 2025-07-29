@@ -72,6 +72,10 @@ namespace FootballManager.Models
         public int Goals { get; set; } = 0;
         public int Assists { get; set; } = 0;
         public int CleanSheets { get; set; } = 0; // For goalkeepers
+        public int YellowCards { get; set; } = 0;
+        public int RedCards { get; set; } = 0;
+        public int Injuries { get; set; } = 0;
+        public int MinutesPlayed { get; set; } = 0;
         // Store the sum of all match ratings and count to compute average
         public double PerformanceRating { get; set; } = 6.5; // Average match rating, default 6.5
         public double TotalMatchRating { get; set; } = 0.0; // Sum of all match ratings

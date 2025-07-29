@@ -94,7 +94,7 @@
             <dd class="col-sm-8">
                 @if (Model.LeagueId > 0)
                 {
-                    <a asp-controller="Leagues" asp-action="Details" asp-route-id="@Model.LeagueId">@Model.LeagueName</a>
+                    <a class="minimal-link" asp-controller="Leagues" asp-action="Details" asp-route-id="@Model.LeagueId">@Model.LeagueName</a>
                 }
                 else
                 {
@@ -141,7 +141,7 @@
         var opponent = allTeams.FirstOrDefault(t => t.Id == opponentId);
         <tr>
             <td>@match.Date.ToString("yyyy-MM-dd")</td>
-            <td><a asp-controller="Teams" asp-action="Details" asp-route-id="@opponentId">@(opponent != null ? opponent.Name : "Unknown")</a></td>
+            <td><a class="minimal-link" asp-controller="Teams" asp-action="Details" asp-route-id="@opponentId">@(opponent != null ? opponent.Name : "Unknown")</a></td>
             <td>@(isHome ? "Home" : "Away")</td>
             <td><strong>@match.HomeGoals</strong> - <strong>@match.AwayGoals</strong></td>
         </tr>
@@ -158,7 +158,7 @@
                 @foreach (var staff in Model.StaffMembers)
                 {
                     <li>
-                        <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@staff.Id">
+                        <a class="minimal-link" asp-controller="StaffMembers" asp-action="Details" asp-route-id="@staff.Id">
                             @if (staff.Job.ToString() == "Manager") {
                                 <strong>@staff.Name</strong> <span class="badge bg-primary">Manager</span>
                                 @if (staff.StartDate != null) { <span style="color:#888;">(@staff.StartDate.Value.ToString("yyyy-MM-dd"))</span> }
@@ -187,7 +187,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Manager</h5>
                     <p class="card-text">
-                        <a asp-controller="StaffMembers" asp-action="Details" asp-route-id="@manager.Id">
+                        <a class="minimal-link" asp-controller="StaffMembers" asp-action="Details" asp-route-id="@manager.Id">
                             <strong>@manager.Name</strong>
                         </a>
                         <br />
@@ -229,21 +229,21 @@
                 <td></td>
                 <td>
                     @if (selectedPlayers[0] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[0].Id">@selectedPlayers[0].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[0].Id">@selectedPlayers[0].Name</a><br />
                         <small>@selectedPlayers[0].Position</small>
                     } else { <span>LW</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[1] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[1].Id">@selectedPlayers[1].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[1].Id">@selectedPlayers[1].Name</a><br />
                         <small>@selectedPlayers[1].Position</small>
                     } else { <span>ST</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[2] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[2].Id">@selectedPlayers[2].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[2].Id">@selectedPlayers[2].Name</a><br />
                         <small>@selectedPlayers[2].Position</small>
                     } else { <span>RW</span> }
                 </td>
@@ -253,21 +253,21 @@
                 <td></td>
                 <td>
                     @if (selectedPlayers[3] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[3].Id">@selectedPlayers[3].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[3].Id">@selectedPlayers[3].Name</a><br />
                         <small>@selectedPlayers[3].Position</small>
                     } else { <span>CM</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[4] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[4].Id">@selectedPlayers[4].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[4].Id">@selectedPlayers[4].Name</a><br />
                         <small>@selectedPlayers[4].Position</small>
                     } else { <span>CM</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[5] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[5].Id">@selectedPlayers[5].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[5].Id">@selectedPlayers[5].Name</a><br />
                         <small>@selectedPlayers[5].Position</small>
                     } else { <span>CM</span> }
                 </td>
@@ -275,28 +275,28 @@
             <tr>
                 <td>
                     @if (selectedPlayers[6] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[6].Id">@selectedPlayers[6].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[6].Id">@selectedPlayers[6].Name</a><br />
                         <small>@selectedPlayers[6].Position</small>
                     } else { <span>LB</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[7] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[7].Id">@selectedPlayers[7].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[7].Id">@selectedPlayers[7].Name</a><br />
                         <small>@selectedPlayers[7].Position</small>
                     } else { <span>CB</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[8] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[8].Id">@selectedPlayers[8].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[8].Id">@selectedPlayers[8].Name</a><br />
                         <small>@selectedPlayers[8].Position</small>
                     } else { <span>CB</span> }
                 </td>
                 <td></td>
                 <td>
                     @if (selectedPlayers[9] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[9].Id">@selectedPlayers[9].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[9].Id">@selectedPlayers[9].Name</a><br />
                         <small>@selectedPlayers[9].Position</small>
                     } else { <span>RB</span> }
                 </td>
@@ -305,7 +305,7 @@
                 <td colspan="3"></td>
                 <td>
                     @if (selectedPlayers[10] != null) {
-                        <a asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[10].Id">@selectedPlayers[10].Name</a><br />
+                        <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@selectedPlayers[10].Id">@selectedPlayers[10].Name</a><br />
                         <small>@selectedPlayers[10].Position</small>
                     } else { <span>GK</span> }
                 </td>
@@ -322,7 +322,7 @@
             @foreach (var player in Model.Players)
             {
                 <li>
-                    <a asp-controller="Players" asp-action="Details" asp-route-id="@player.Id">@player.Name</a>
+                    <a class="minimal-link" asp-controller="Players" asp-action="Details" asp-route-id="@player.Id">@player.Name</a>
                 </li>
             }
             </ul>

@@ -11,6 +11,10 @@ namespace FootballManager.Models
         public int HomeGoals { get; set; }
         public int AwayGoals { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
-        //public List<PlayerMatchStat> PlayerStats { get; set; }
+    // Navigation for Game Details view (not mapped to DB)
+    public Team? HomeTeam { get; set; }
+    public Team? AwayTeam { get; set; }
+    public List<Player> HomePlayers { get; set; } = new List<Player>();
+    public List<Player> AwayPlayers { get; set; } = new List<Player>();
     }
 }

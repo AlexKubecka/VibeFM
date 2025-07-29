@@ -11,6 +11,7 @@ namespace FootballManager.Data
         public DbSet<StaffMember> StaffMembers { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<PlayerMatchStat> PlayerMatchStats { get; set; }
 
             // Constructor for ASP.NET Core DI
         public FootballManagerDbContext(DbContextOptions<FootballManagerDbContext> options)

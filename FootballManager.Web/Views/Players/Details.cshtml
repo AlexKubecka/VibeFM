@@ -16,7 +16,7 @@
             <tr><th>Team</th><td>
                 @if (Model.Team != null)
                 {
-                    <a asp-controller="Teams" asp-action="Details" asp-route-id="@Model.Team.Id">@Model.Team.Name</a>
+                    <a class="minimal-link" asp-controller="Teams" asp-action="Details" asp-route-id="@Model.Team.Id">@Model.Team.Name</a>
                 }
                 else
                 {

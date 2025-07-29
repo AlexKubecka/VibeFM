@@ -1,23 +1,78 @@
-﻿@{
-    ViewData["Title"] = "Home";
+﻿@using FootballManager.Models
+@inject FootballManager.Data.FootballManagerDbContext Db
+@{
+    ViewData["Title"] = "Football Manager Home";
+    var leagues = Db.Leagues.ToList();
+    var recentMatches = Db.Matches.OrderByDescending(m => m.Date).Take(5).ToList();
+    var topScorers = Db.PlayerMatchStats.GroupBy(s => s.PlayerId)
+        .Select(g => new { PlayerId = g.Key, Goals = g.Sum(x => x.Goals) })
+        .OrderByDescending(x => x.Goals).Take(5).ToList();
+    var topPlayers = topScorers
+        .Join(Db.Players, s => s.PlayerId, p => p.Id, (s, p) => new { Player = p, s.Goals })
+        .ToList();
 }
-
-<div class="minimal-card">
-<h1>Football Manager</h1>
-<p>Welcome! Use the links below to view and manage your data:</p>
-
-<ul class="minimal-list">
-    <li><a asp-controller="Teams" asp-action="Index">Teams</a></li>
-    <li><a asp-controller="Players" asp-action="Index">Players</a></li>
-    <li><a asp-controller="StaffMembers" asp-action="Index">Staff Members</a></li>
-</ul>
-
-<form asp-action="SeedDatabase" method="post">
-    <button type="submit" class="btn btn-primary">Seed Database from JSON</button>
-</form>
-
-@if (TempData["SeedResult"] != null)
-{
-    <div class="alert alert-success mt-3">@TempData["SeedResult"]</div>
-}
+<div class="minimal-card" style="margin:2em auto;max-width:900px;">
+    <h1 style="text-align:center;">Football Manager</h1>
+    <div style="display:flex;flex-wrap:wrap;gap:2em;justify-content:center;">
+        <a class="btn btn-primary" href="/Leagues">Leagues</a>
+        <a class="btn btn-primary" href="/Teams">Teams</a>
+        <a class="btn btn-primary" href="/Players">Players</a>
+        <a class="btn btn-warning" href="/Dev/SimulateGame">Dev: Simulate Game</a>
+    </div>
+    <hr />
+    <h2>Leagues</h2>
+    <table class="table table-sm">
+        <thead><tr><th>Name</th><th>Nation</th><th>Teams</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var l in leagues)
+        {
+            var teamCount = Db.Teams.Count(t => t.LeagueId == l.Id);
+            <tr>
+                <td>@l.Name</td>
+                <td>@l.Nation</td>
+                <td>@teamCount</td>
+                <td><a class="btn btn-outline-secondary btn-sm" href="/Leagues/Details/@l.Id">View</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <hr />
+    <h2>Recent Matches</h2>
+    <table class="table table-sm">
+        <thead><tr><th>Date</th><th>Home</th><th></th><th>Away</th><th>Score</th></tr></thead>
+        <tbody>
+        @foreach (var m in recentMatches)
+        {
+            var home = Db.Teams.FirstOrDefault(t => t.Id == m.HomeTeamId);
+            var away = Db.Teams.FirstOrDefault(t => t.Id == m.AwayTeamId);
+            <tr>
+                <td>@m.Date.ToString("yyyy-MM-dd")</td>
+                <td>@home?.Name</td>
+                <td>vs</td>
+                <td>@away?.Name</td>
+                <td>
+                    <a href="/Games/Details/@m.Id" style="text-decoration:none;">
+                        <strong>@m.HomeGoals</strong> - <strong>@m.AwayGoals</strong>
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <hr />
+    <h2>Top Scorers</h2>
+    <table class="table table-sm">
+        <thead><tr><th>Name</th><th>Team</th><th>Goals</th></tr></thead>
+        <tbody>
+        @foreach (var p in topPlayers)
+        {
+            var team = Db.Teams.FirstOrDefault(t => t.Id == p.Player.TeamId);
+            <tr>
+                <td>@p.Player.Name</td>
+                <td>@team?.Name</td>
+                <td>@p.Goals</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>

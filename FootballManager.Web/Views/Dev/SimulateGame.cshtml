@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Simulate Single Game (Dev)";
+    var teams = ViewBag.Teams as List<FootballManager.Models.Team>;
+}
+<div class="minimal-card" style="max-width:500px;margin:2em auto;">
+    <h1>Simulate Single Game (Dev)</h1>
+    <form asp-controller="Dev" asp-action="StartMinuteSimulation" method="post">
+        <div class="mb-3">
+            <label for="homeTeamId" class="form-label">Home Team</label>
+            <select class="form-select" id="homeTeamId" name="homeTeamId" required>
+                <option value="">Select Home Team</option>
+                @foreach (var t in teams)
+                {
+                    <option value="@t.Id">@t.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="awayTeamId" class="form-label">Away Team</label>
+            <select class="form-select" id="awayTeamId" name="awayTeamId" required>
+                <option value="">Select Away Team</option>
+                @foreach (var t in teams)
+                {
+                    <option value="@t.Id">@t.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+        </div>
+        <button type="submit" class="btn btn-success">Simulate Game</button>
+    </form>
+</div>

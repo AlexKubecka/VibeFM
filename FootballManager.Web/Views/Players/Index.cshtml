@@ -24,14 +24,14 @@
 @foreach (var player in Model)
 {
     <tr>
-        <td><a asp-action="Details" asp-route-id="@player.Id">@player.Name</a></td>
+        <td><a class="minimal-link" asp-action="Details" asp-route-id="@player.Id">@player.Name</a></td>
         <td>@player.Age</td>
         <td>@player.Position</td>
         <td>@player.Nationality</td>
         <td>
         @if (player.Team != null)
         {
-            <a asp-controller="Teams" asp-action="Details" asp-route-id="@player.Team.Id">@player.Team.Name</a>
+            <a class="minimal-link" asp-controller="Teams" asp-action="Details" asp-route-id="@player.Team.Id">@player.Team.Name</a>
         }
         else
         {
