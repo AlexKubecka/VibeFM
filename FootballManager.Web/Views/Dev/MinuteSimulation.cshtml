@@ -93,6 +93,10 @@
                     @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-danger" @(sim.CurrentMinute >= 90 ? "disabled" : "")>Simulate Full Game</button>
                 </form>
+                <form asp-controller="Dev" asp-action="ReplayMinuteSimulation" method="post" style="display:inline; margin-left:1em;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-secondary">Replay</button>
+                </form>
                 @if (sim.CurrentMinute >= 90)
                 {
                     <span style="margin-left:1em;color:green;font-weight:bold;">Match Finished</span>

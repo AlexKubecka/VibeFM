@@ -103,6 +103,23 @@ namespace FootballManager.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SeedDummyTeams()
+        {
+            FootballManager.Utilities.DummyDbSeeder.SeedTwoDummyTeams(_dbContext);
+            TempData["Message"] = "Dummy teams seeded.";
+            return RedirectToAction("MinuteSimulation");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ReplayMinuteSimulation()
+        {
+            HttpContext.Session.Remove("dev_sim_state");
+            return RedirectToAction("SimulateGame");
+        }
+        
+        [HttpPost]
         public IActionResult SimulateNextMinute()
         {
             var simState = HttpContext.Session.GetObjectFromJson<GameSimulationState>("dev_sim_state");
